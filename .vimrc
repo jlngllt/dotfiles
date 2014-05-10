@@ -1,4 +1,3 @@
-" vim: set sw=2 sts=2
 " CONFIGURATION GÉNÉRAL
 " ----------------------------------------------------------------------------
 " n est pas compatible avec vi set nocompatible
