@@ -1,14 +1,14 @@
 " vim: set sw=2 sts=2
-" CONFIGURATION GÉNÉRAL{{{1
+" CONFIGURATION GÉNÉRAL
 " ----------------------------------------------------------------------------
-" n'est pas compatible avec vi set nocompatible
+" n est pas compatible avec vi set nocompatible
 set nocompatible
 " option requise pour vundle
 filetype off
 " caractère de la variable <leader>
 let mapleader = ","
 
-" VUNDLE{{{2
+" VUNDLE
 " ----------------------------------------------------------------------------
 " installation de vundle (vundle est le gestionnaire de plugin)
 if has('win32') || has('win64')
@@ -30,7 +30,7 @@ Bundle 'kien/ctrlp.vim'
 Bundle 'tpope/vim-rsi'
 Bundle 'flazz/vim-colorschemes'
 
-" GVIM{{{2
+" GVIM
 " configuration de gvim
 if has("gui_running")
   if has('win32') || has ('win64')
@@ -44,11 +44,11 @@ if has("gui_running")
   set guioptions-=L  "remove left-hand scroll bar
 endif
 
-" BASIC{{{2
+" BASIC
 " ----------------------------------------------------------------------------
 " détection du type de fichier
 filetype plugin on
-" activation d'une indentation
+" activation d une indentation
 filetype plugin indent on
 " affichage du mode courant dans la barre de status
 set showmode
@@ -60,7 +60,7 @@ set laststatus=2
 set ch=2
 " style de la barre de status
 set stl=%f\ %m\ %r\ Line:\ %l/%L[%p%%]\ Col:\ %c\ Buf:\ #%n\ [%b][0x%B]
-" ne coupe pas le texte lorsqu'il est trop long
+" ne coupe pas le texte lorsqu il est trop long
 set nowrap
 " passe à la ligne suivante lors de déplacement en début ou fin de ligne
 " char   key
@@ -82,10 +82,10 @@ set breakat=\ \	;:,!?
 set relativenumber
 set number
 set numberwidth=4
-" ne ferme pas le(s) buffer(s) (permet d'ouvrir un autre fichier sans avoir
+" ne ferme pas le(s) buffer(s) (permet d ouvrir un autre fichier sans avoir
 "   besoin de sauvegarder le buffer en cours si il a déjà été modifié)
 " set hidden
-" système d'encodage de caractère dans vim
+" système d encodage de caractère dans vim
 set encoding=utf-8
 " paramétrage de la langue pour la correction orthographique
 set spelllang=fr
@@ -97,19 +97,19 @@ set ignorecase
 " si ignorecase et smartcase sont à ON, la case est active si le pattern
 " contient une majuscule
 set smartcase
-" affiche le pattern de recherche lorsqu'il est écrit
+" affiche le pattern de recherche lorsqu il est écrit
 set incsearch
 " ignore certains type de fichier
 set wildignore=*.swp,*.bak,*.pyc,*.class,*.o,*.exe,*.a,*.out
-" relecture du fichier si il a été changer à l'extérieur de vim
+" relecture du fichier si il a été changer à l extérieur de vim
 set autoread
-" sauvegarde de l'historique des commandes
+" sauvegarde de l historique des commandes
 set history=1000
 " nombre de retour en arrière possible
 set undolevels=1000
 " surligne toutes les recherches
 set hlsearch
-" lors d'un appuie sur <tab> insertion d'une tabulation de la taille de
+" lors d un appuie sur <tab> insertion d une tabulation de la taille de
 " shiftwidth et softtabstop
 set smarttab
 " utilise des espaces en lieu et place de tabulation
@@ -119,10 +119,10 @@ set scrolloff=3
 "  suppression de la fenêtre de pré visualisation de complétion (scratch 
 " window)
 set completeopt-=preview
-" activation d'une complétion complète dans la ligne de commande
+" activation d une complétion complète dans la ligne de commande
 set wildmode=list:longest
 set nowildmenu
-" affiche lors d'une complétion le tag name et la recherche
+" affiche lors d une complétion le tag name et la recherche
 set showfulltag
 " Meilleur affichage lors de la complétion de tag : :tag<tab>
 set wildoptions=tagfile
@@ -135,7 +135,7 @@ set noswapfile
 set directory-=.
 " affiche un titre à la fenêtre
 set title
-" active l'utilisation de la souris
+" active l utilisation de la souris
 set mouse=a
 " visual sélection en carré
 set virtualedit=block
@@ -149,12 +149,12 @@ else
   lang mess C
 endif
 if has("gui_running")
-  " plus d'espace entre chaque ligne (améliore la lisibilité)
+  " plus d espace entre chaque ligne (améliore la lisibilité)
   set linespace=1
 endif
 " emplacement des tags
 set tags=./tags;
-" affiche le menu de complétion meme si il n'y a qu'une seul possibilité
+" affiche le menu de complétion meme si il n y a qu une seul possibilité
 set completeopt=menuone
 " complétion basée uniquement sur le buffer courant
 " . The current buffer
@@ -173,10 +173,10 @@ set report=0
 " on tente de maintenir la position du curseur (au lieu de la mettre en début
 " de ligne )
 set nostartofline
-" lors d'un horizontal split (sp) la nouvelle fenêtre se placera en dessous de
+" lors d un horizontal split (sp) la nouvelle fenêtre se placera en dessous de
 " celle courante
 set splitbelow
-" lors d'un vertical split (vp) la nouvelle fenêtre se placera à droite de
+" lors d un vertical split (vp) la nouvelle fenêtre se placera à droite de
 " celle courante
 set splitright
 " taille minimal de la fenêtre courante
@@ -185,10 +185,10 @@ set winwidth=30
 set winheight=1
 " nombre de ligne maximum dans la command line
 set cmdwinheight=5
-" lors d'un split les fenêtre font la même taille si equalalways = on
-" sinon lors d'un split la taille de la fenêtre courante sera réduite
+" lors d un split les fenêtre font la même taille si equalalways = on
+" sinon lors d un split la taille de la fenêtre courante sera réduite
 set noequalalways
-" taille des fenêtres de preview et d'aide
+" taille des fenêtres de preview et d aide
 set previewheight=8
 set helpheight=12
 " Quand une ligne est trop longue affhcé @
@@ -230,7 +230,7 @@ set timeout timeoutlen=3000 ttimeoutlen=100
 " programme utiliser lors la commande K
 set keywordprg=:help
 
-" COLOR {{{1
+" COLOR 
 " ----------------------------------------------------------------------------
 syntax on
 set t_Co=256
@@ -240,7 +240,7 @@ set t_Co=256
 "" Couleurs DARK
 " --- TOMOROW-NIGHT ---
 colorscheme Tomorrow-Night
-" Highlight la colonne 80 et tout ce qu'il y a derrière la ligne 120
+" Highlight la colonne 80 et tout ce qu il y a derrière la ligne 120
 let &colorcolumn="80,".join(range(120,999),",")
 
 " La coloration syntaxique pour les documents complexe est légèrement lente.
@@ -249,14 +249,14 @@ set synmaxcol=400
 syn sync minlines=200
 syn sync maxlines=500
 
-" NETRW{{{1
+" NETRW
 " ----------------------------------------------------------------------------
 let g:netrw_liststyle = 0
 let g:netrw_alto      = 1
 let g:netrw_altv      = 1
 let g:netrw_banner    = 0
 
-" FILETYPE/AUTOCMD{{{1
+" FILETYPE/AUTOCMD
 " ----------------------------------------------------------------------------
 au BufRead, BufNewFile {Gemfile, Rakefile, Vagrantfile, Thorfile, config.ru}
       \ set ft=ruby
@@ -289,10 +289,10 @@ autocmd BufReadPost quickfix set modifiable
 "  autocmd WinLeave * setlocal nocursorline
 "augroup END
 autocmd FileType tagbar setlocal nocursorline nocursorcolumn
-" enlève le commentaire automatique après qu'une ligne commenté soit écrite
+" enlève le commentaire automatique après qu une ligne commenté soit écrite
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
-" PLUGINS{{{1
+" PLUGINS
 " ----------------------------------------------------------------------------
 " Rainbow
 au VimEnter * RainbowParenthesesToggle
@@ -303,11 +303,11 @@ au Syntax   * RainbowParenthesesLoadBraces
 " TagBar
 nmap <leader>t :Tagbar<cr>
 
-" MAPPING{{{1
+" MAPPING
 " ----------------------------------------------------------------------------
 " annulation du sur lignage après une recherche
 nmap <space> :set hls!<Bar>:set hls?<CR>
-" activation de diffèrent type d'indentation
+" activation de diffèrent type d indentation
 nmap <F4> :set expandtab   tabstop=4 shiftwidth=4  softtabstop=4<CR>
 nmap <F2> :set expandtab   tabstop=2 shiftwidth=2  softtabstop=2<CR>
 nmap <F3> :set expandtab   tabstop=3 shiftwidth=3  softtabstop=3<CR>
@@ -327,11 +327,11 @@ endif
 " surlignage avec effet mot centré
 nnoremap <silent> n nzz
 nnoremap <silent> N Nzz
-" cherche l'élément sous le curseur mais ne saute pas à la première occurrence
+" cherche l élément sous le curseur mais ne saute pas à la première occurrence
 " trouvée
 nnoremap <silent>* :let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>
 nnoremap <silent># :let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>
-" force l'écriture en tant que root
+" force l écriture en tant que root
 cmap w!! %!sudo tee > /dev/null %
 " recherche avec des regex normal
 nnoremap / /\v
@@ -339,7 +339,7 @@ vnoremap / /\v
 nnoremap ? /\v
 vnoremap ? /\v
 
-" AG/GREP/SEARCH{{{1
+" AG/GREP/SEARCH
 " ----------------------------------------------------------------------------
 nmap  s   [Search]
 xmap  s   [Search]
@@ -389,9 +389,9 @@ autocmd FileType qf wincmd J
 autocmd QuickFixCmdPost *grep* cwindow
 
 
-"FONCTIONS{{{1
+"FONCTIONS
 " ----------------------------------------------------------------------------
-" HLNext{{{2
+" HLNext
 " permet de faire clignoter un pattern
 function! HLNext (blinktime)
   highlight whiteonred ctermfg=white ctermbg=red guifg=#fff8dc guibg=#a52a2a
@@ -405,8 +405,8 @@ function! HLNext (blinktime)
   redraw
 endfunction
 
-" Preview{{{2
-" permet de faire un surlignage d'un pattern dans une preview
+" Preview
+" permet de faire un surlignage d un pattern dans une preview
 function! s:preview()
   normal! zv
   normal! zz
@@ -414,9 +414,9 @@ function! s:preview()
   redraw
   sleep 400m
   wincmd p
-endfunction "}}}
+endfunction
 
-"GrepQuixFix{{{2
+"GrepQuixFix
 " Permet de filter les resultats dans le quickfix
 function! GrepQuickFix(pat)
   let all = getqflist()
@@ -429,11 +429,11 @@ function! GrepQuickFix(pat)
 endfunction
 command! -nargs=* SVNdiff call GrepQuickFix(<q-args>)
 
-"JGU_svn_diff{{{2
+"JGU_svn_diff
 " Permet de faire un diff svn a partir du path
 " TODO BUG à Corriger : 
-"   1. Dans un netrw à l'ouverture il ouvre une fenetre vide sans nom
-"      meme si il n'y a qu'une seul ligne
+"   1. Dans un netrw à l ouverture il ouvre une fenetre vide sans nom
+"      meme si il n y a qu une seul ligne
 "   2. Trouver le moyen de ne pas avoir a sauvegarder le fichier et de
 "      ne pas avoir a faire de q! pour quitter le buffer
 "   3. Si le buffer est déjà ouvert il faut tout effacer et recoller
@@ -452,7 +452,7 @@ function! JGU_svn_diff(path)
 endfunction
 command! -nargs=1 -complete=dir SVNdiff call JGU_svn_diff(<f-args>)
 
-"LS{{{2
+"LS
 " Permet de faire un LS puis de changer les buffers
 function! LS_buffer()
   ls
