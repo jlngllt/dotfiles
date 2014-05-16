@@ -1,6 +1,6 @@
 " CONFIGURATION GÉNÉRAL
 " ----------------------------------------------------------------------------
-" n est pas compatible avec vi set nocompatible
+" n'est pas compatible avec vi set nocompatible
 set nocompatible
 " option requise pour vundle
 filetype off
@@ -12,22 +12,24 @@ let mapleader = ","
 " installation de vundle (vundle est le gestionnaire de plugin)
 if has('win32') || has('win64')
   set rtp+=~/.vim/bundle/vundle/
-  call vundle#rc('$HOME/.vim/bundle/')
+  call vundle#begin('$HOME/.vim/bundle/')
 else
   " Usual quickstart instructions
   set rtp+=~/.vim/bundle/vundle/
-  call vundle#rc()
+  call vundle#begin()
 endif
 Bundle 'gmarik/vundle'
 " installation de plugin
-Bundle 'godlygeek/csapprox'
-Bundle 'majutsushi/tagbar'
-Bundle 'kien/rainbow_parentheses.vim'
-Bundle 'tpope/vim-unimpaired'
-Bundle 'tpope/vim-repeat'
-Bundle 'kien/ctrlp.vim'
-Bundle 'tpope/vim-rsi'
-Bundle 'flazz/vim-colorschemes'
+Plugin 'godlygeek/csapprox'
+Plugin 'majutsushi/tagbar'
+Plugin 'kien/rainbow_parentheses.vim'
+Plugin 'tpope/vim-unimpaired'
+Plugin 'tpope/vim-repeat'
+Plugin 'kien/ctrlp.vim'
+Plugin 'tpope/vim-rsi'
+Plugin 'flazz/vim-colorschemes'
+Plugin 'vcscommand.vim'
+call vundle#end()
 
 " GVIM
 " configuration de gvim
@@ -47,7 +49,7 @@ endif
 " ----------------------------------------------------------------------------
 " détection du type de fichier
 filetype plugin on
-" activation d une indentation
+" activation d'une indentation
 filetype plugin indent on
 " affichage du mode courant dans la barre de status
 set showmode
@@ -59,9 +61,9 @@ set laststatus=2
 set ch=2
 " style de la barre de status
 set stl=%f\ %m\ %r\ Line:\ %l/%L[%p%%]\ Col:\ %c\ Buf:\ #%n\ [%b][0x%B]
-" ne coupe pas le texte lorsqu il est trop long
+" ne coupe pas le texte lorsqu'il est trop long
 set nowrap
-" passe à la ligne suivante lors de déplacement en début ou fin de ligne
+" passe à la ligne suivante lors de déplacement en debut ou fin de ligne
 " char   key
 " b      <BS>
 " s      <Space>
@@ -81,13 +83,16 @@ set breakat=\ \	;:,!?
 set relativenumber
 set number
 set numberwidth=4
-" ne ferme pas le(s) buffer(s) (permet d ouvrir un autre fichier sans avoir
+" ne ferme pas le(s) buffer(s) (permet d'ouvrir un autre fichier sans avoir
 "   besoin de sauvegarder le buffer en cours si il a déjà été modifié)
 " set hidden
-" système d encodage de caractère dans vim
+" système d'encodage de caractère dans vim
 set encoding=utf-8
 " paramétrage de la langue pour la correction orthographique
 set spelllang=fr
+" ajout de path des includes pour pouvoir naviguer facilement avec les noms de
+" fichier avec des commandes tel que gf
+set path+=**
 " affiche les espaces et tabulation
 set list
 set listchars=trail:·,tab:>-,eol:¬
@@ -96,32 +101,32 @@ set ignorecase
 " si ignorecase et smartcase sont à ON, la case est active si le pattern
 " contient une majuscule
 set smartcase
-" affiche le pattern de recherche lorsqu il est écrit
+" affiche le pattern de recherche lorsqu'il est écrit
 set incsearch
 " ignore certains type de fichier
 set wildignore=*.swp,*.bak,*.pyc,*.class,*.o,*.exe,*.a,*.out
-" relecture du fichier si il a été changer à l extérieur de vim
+" relecture du fichier si il a été changer à l'extérieur de vim
 set autoread
-" sauvegarde de l historique des commandes
+" sauvegarde de l'historique des commandes
 set history=1000
 " nombre de retour en arrière possible
 set undolevels=1000
 " surligne toutes les recherches
 set hlsearch
-" lors d un appuie sur <tab> insertion d une tabulation de la taille de
+" lors d'un appuie sur <tab> insertion d'une tabulation de la taille de
 " shiftwidth et softtabstop
 set smarttab
 " utilise des espaces en lieu et place de tabulation
 set expandtab
 " au moins 3 lignes visible autour du curseur
 set scrolloff=3
-"  suppression de la fenêtre de pré visualisation de complétion (scratch 
+"  suppression de la fenêtre de pré visualisation de complétion (scratch
 " window)
 set completeopt-=preview
-" activation d une complétion complète dans la ligne de commande
+" activation d'une complétion complète dans la ligne de commande
 set wildmode=list:longest
 set nowildmenu
-" affiche lors d une complétion le tag name et la recherche
+" affiche lors d'une complétion le tag name et la recherche
 set showfulltag
 " Meilleur affichage lors de la complétion de tag : :tag<tab>
 set wildoptions=tagfile
@@ -134,7 +139,7 @@ set noswapfile
 set directory-=.
 " affiche un titre à la fenêtre
 set title
-" active l utilisation de la souris
+" active l'utilisation de la souris
 set mouse=a
 " visual sélection en carré
 set virtualedit=block
@@ -148,12 +153,12 @@ else
   lang mess C
 endif
 if has("gui_running")
-  " plus d espace entre chaque ligne (améliore la lisibilité)
+  " plus d'espace entre chaque ligne (améliore la lisibilité)
   set linespace=1
 endif
 " emplacement des tags
 set tags=./tags;
-" affiche le menu de complétion meme si il n y a qu une seul possibilité
+" affiche le menu de complétion meme si il n'y a qu'une seul possibilité
 set completeopt=menuone
 " complétion basée uniquement sur le buffer courant
 " . The current buffer
@@ -172,10 +177,10 @@ set report=0
 " on tente de maintenir la position du curseur (au lieu de la mettre en début
 " de ligne )
 set nostartofline
-" lors d un horizontal split (sp) la nouvelle fenêtre se placera en dessous de
+" lors d'un horizontal split (sp) la nouvelle fenêtre se placera en dessous de
 " celle courante
 set splitbelow
-" lors d un vertical split (vp) la nouvelle fenêtre se placera à droite de
+" lors d'un vertical split (vp) la nouvelle fenêtre se placera à droite de
 " celle courante
 set splitright
 " taille minimal de la fenêtre courante
@@ -184,10 +189,10 @@ set winwidth=30
 set winheight=1
 " nombre de ligne maximum dans la command line
 set cmdwinheight=5
-" lors d un split les fenêtre font la même taille si equalalways = on
-" sinon lors d un split la taille de la fenêtre courante sera réduite
+" lors d'un split les fenêtre font la même taille si equalalways = on
+" sinon lors d'un split la taille de la fenêtre courante sera réduite
 set noequalalways
-" taille des fenêtres de preview et d aide
+" taille des fenêtres de preview et d'aide
 set previewheight=8
 set helpheight=12
 " Quand une ligne est trop longue affhcé @
@@ -195,8 +200,6 @@ set display=lastline
 "set display+=uhex
 " Round indent by shiftwidth.
 set shiftround
-" activé le modeline
-set modeline
 " utiliser le clipboard register
 if has('unnamedplus')
   set clipboard& clipboard+=unnamedplus
@@ -212,7 +215,7 @@ set matchtime=3
 set matchpairs+=<:>
 " ignore la case lors de la complétion
 set infercase
-" activation du folding
+" desactivation du folding
 set nofoldenable
 set foldmethod=marker
 " affiche le niveau de folding
@@ -229,24 +232,87 @@ set timeout timeoutlen=3000 ttimeoutlen=100
 " programme utiliser lors la commande K
 set keywordprg=:help
 
-" COLOR 
+" COLOR
 " ----------------------------------------------------------------------------
+" activation de la coloration syntaxique
 syntax on
+" activation des 256 couleurs (d'un bon terminal) pour la coloration 
+" syntaxique
 set t_Co=256
+
+"" ---------------------
+"" Système de notation des couleurs pour savoir si elles sont utilisables dans
+" tout les cas. (diff - spell - search - colorcolumn)
+"" TEMPLATE :
+"" NOM_DE_LA_COULEUR DIFF SPELL SEARCH COLORCOLUMN (X -> NOK - O -> OK)
+"" EXEMPLE : (couleur github diff => NOK Spell => NOK Search => OK CC => OK)
+"" GITHUB XXOO
+"" ---------------------
+
 "" Couleurs LIGHT
-" --- GITHUB ---
+"---------------------
+" GITHUB OOOO
 "colorscheme github
+"---------------------
+" Moria XOOX
+"let g:moria_style='white'
+"colorscheme moria
+"---------------------
+
 "" Couleurs DARK
-" --- TOMOROW-NIGHT ---
-colorscheme Tomorrow-Night
-" Highlight la colonne 80 et tout ce qu il y a derrière la ligne 120
-let &colorcolumn="80,".join(range(120,999),",")
+"---------------------
+" TOMOROW-NIGHT XXOO
+"colorscheme Tomorrow-Night
+"---------------------
+" Hybrid OOOO
+colorscheme hybrid
+"---------------------
+" Zenburn OOOX
+"colorscheme zenburn
+"---------------------
+" Herald XXOX
+"colorscheme herald
+"---------------------
+" Moria OOOX
+"let moria_style='dark'
+"colorscheme moria
+"---------------------
+" Gruvbox XOOO
+"let g:gruvbox_italic=0
+"set background=dark
+"colorscheme gruvbox
+"---------------------
+" Kolor XOOO
+"colorscheme kolor
+"---------------------
+" Xoria256 XXOX
+"colorscheme xoria256
+"---------------------
+" Wombat XOOX
+"colorscheme wombat
+"---------------------
 
 " La coloration syntaxique pour les documents complexe est légèrement lente.
 " Ajout de cette configuration pour réduire le chargement)
 set synmaxcol=400
 syn sync minlines=200
 syn sync maxlines=500
+
+" Si on peut on highlight on fait une bande a 80 lignes et on fait une grosse
+" bande large à 120
+nnoremap <F10>  :call ToggleHighlight_c2(80,120)<cr>
+nnoremap <F9>   :call ToggleHighlight_c1(80,120)<cr>
+
+" les couleurs du curseur en mode gui
+"set gcr=a:block
+"" mode aware cursors
+"set gcr+=o:hor50-Cursor
+"set gcr+=n:Cursor
+"set gcr+=i-ci-sm:InsertCursor
+"set gcr+=r-cr:ReplaceCursor-hor20
+"set gcr+=c:CommandCursor
+"set gcr+=v-ve:VisualCursor
+"set gcr+=a:blinkon0
 
 " NETRW
 " ----------------------------------------------------------------------------
@@ -261,7 +327,7 @@ au BufRead, BufNewFile {Gemfile, Rakefile, Vagrantfile, Thorfile, config.ru}
       \ set ft=ruby
 au BufRead, BufNewFile {*.md} set ft=markdown
 autocmd BufNewFile,BufRead *.txt set filetype=txt
-autocmd FileType text setlocal textwidth=78 wrapmargin=2 tabstop=8 shiftwidth=8
+autocmd FileType txt setlocal textwidth=78 wrapmargin=2 tabstop=8 shiftwidth=8
 autocmd FileType markdown setlocal wrap expandtab
 autocmd FileType ruby setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType javascript setlocal shiftwidth=2 tabstop=2 expandtab
@@ -279,16 +345,13 @@ autocmd FileType vim setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType bash setlocal shiftwidth=2 tabstop=2 expandtab
 
 autocmd FileType qf nnoremap <buffer> p <CR>:call <SID>preview()<CR>
+autocmd BufReadPost quickfix setlocal colorcolumn=0
+autocmd Filetype netrw setlocal colorcolumn=0
 autocmd BufReadPost quickfix set modifiable
 
-"augroup cursoline
-"  autocmd!
-"  " enlève le sur lignage de la ligne et colonne dans la fenêtre tagbar
-"  autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-"  autocmd WinLeave * setlocal nocursorline
-"augroup END
+" enlève le sur lignage de la ligne et colonne dans la fenêtre tagbar
 autocmd FileType tagbar setlocal nocursorline nocursorcolumn
-" enlève le commentaire automatique après qu une ligne commenté soit écrite
+" enlève le commentaire automatique après qu'une ligne commenté soit écrite
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 " PLUGINS
@@ -306,37 +369,77 @@ nmap <leader>t :Tagbar<cr>
 " ----------------------------------------------------------------------------
 " annulation du sur lignage après une recherche
 nmap <space> :set hls!<Bar>:set hls?<CR>
-" activation de diffèrent type d indentation
+" activation de diffèrent type d'indentation
 nmap <F4> :set expandtab   tabstop=4 shiftwidth=4  softtabstop=4<CR>
 nmap <F2> :set expandtab   tabstop=2 shiftwidth=2  softtabstop=2<CR>
 nmap <F3> :set expandtab   tabstop=3 shiftwidth=3  softtabstop=3<CR>
 " activation de la correction orthographique
-nmap <F6> :set spell!<bar>set spell?<CR>
-" ctags
-nmap <F5> :!ctags -R --extra=+q --filed=+iaS --c-kinds=+px
+nmap <F5> :!ctags -R . --c-kinds=+p --fields=+iaS --extra=+q
+" activation de la correction orthographique
+nmap <F8> :set spell!<bar>set spell?<CR>
 " raccourcis pour faciliter la substitution de texte
 nmap S :%s//g<LEFT><LEFT>
 vmap S :s//g<LEFT><LEFT>
+" ajoute au clipboard commun chaque chose copier avec y
 if has('clipboard')
   xnoremap <silent> y "*y:let [@+,@"]=[@*,@*]<CR>
 endif
-" surlignage avec effet blink
-"nnoremap <silent> n   n:call HLNext(0.2)<cr>
-"nnoremap <silent> N   N:call HLNext(0.2)<cr>
-" surlignage avec effet mot centré
+" surlignage avec effet : mot centré
 nnoremap <silent> n nzz
 nnoremap <silent> N Nzz
-" cherche l élément sous le curseur mais ne saute pas à la première occurrence
+" cherche l'élément sous le curseur mais ne saute pas à la première occurrence
 " trouvée
 nnoremap <silent>* :let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>
 nnoremap <silent># :let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>
-" force l écriture en tant que root
-cmap w!! %!sudo tee > /dev/null %
+" force l'écriture en tant que root
+ab w!! %!sudo tee > /dev/null %
 " recherche avec des regex normal
 nnoremap / /\v
 vnoremap / /\v
-nnoremap ? /\v
-vnoremap ? /\v
+nnoremap ? ?\v
+vnoremap ? ?\v
+" switch h/c
+ab s!! find %:t:r
+
+" supprime le raccourcis sort (s) dans netrw pour pouvoir utiliser ctrl-p à la
+" place
+augroup netrw_fixmaps
+  autocmd!
+  autocmd filetype netrw call Fix_netrw_fixmaps()
+augroup END
+
+" VERSION CONTROL
+" ----------------------------------------------------------------------------
+let g:VCSCommandMapPrefix = "!"
+"" ne pas decommenter cette partie
+"" liste des raccourcis pour vcscommand
+""!a VCSAdd
+""!n VCSAnnotate
+""!N VCSAnnotate!
+""!c VCSCommit
+""!D VCSDelete
+""!d VCSDiff
+""!g VCSGotoOriginal
+""!G VCSGotoOriginal!
+""!i VCSInfo
+""!l VCSLog
+""!L VCSLock
+""!r VCSReview
+""!s VCSStatus
+""!u VCSUpdate
+""!U VCSUnlock
+""!v VCSVimDiff
+""
+"" pour les buffer CVS
+""
+""!e CVSEdit
+""!E CVSEditors
+""!t CVSUnedit
+""!wv CVSWatchers
+""!wa CVSWatchAdd
+""!wn CVSWatchOn
+""!wf CVSWatchOff
+""!wf CVSWatchRemove
 
 " AG/GREP/SEARCH
 " ----------------------------------------------------------------------------
@@ -353,33 +456,39 @@ nnoremap [Search]m :<C-u>CtrlPMRUFiles<CR>
 nnoremap [Search]q :<C-u>CtrlPQuickfix<CR>
 nnoremap [Search]s :<C-u>CtrlPMixed<CR>
 nnoremap [Search]t :<C-u>CtrlPTag<CR>
+" grep
 nnoremap [Search]g :<C-u>vimgrep //gj **/*.<left><left><left>
 \<left><left><left><left><left><left>
+nnoremap [Search]G :<C-u>vimgrep /<c-r><c-w>/gj **/*.
+" search trailing space
+nnoremap [Search]<space> /\s\+$/<cr>
 
+" ne pas utiliser ctrl_map pour changer le mapping de ctrl-p
 let g:ctrlp_map = '<Nop>'
+" option du local workspace directory dans ctrl-p
 let g:ctrlp_working_path_mode = 'a'
-" Ouvre nouveau fichier dans la fenêtre courante
+" Ouvre un nouveau fichier dans la fenêtre courante
 let g:ctrlp_open_new_file = 'r'
+" extentions utilisées dans ctrl-p
 let g:ctrlp_extensions = ['tag', 'quickfix', 'dir', 'line', 'mixed']
+" option d'affichage des resultats dans crtl-p
 let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:18'
 
+" type de recherche réalisé avec ctrl-p en fonction des diffèrent système de
+" recherche installé sur le système courant (pour crtl-p)
 if executable('ag')
-  "set grepprg=ag\ --nogroup\ -iS
-  "set grepformat=%f:%l:%m
   let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 elseif executable('ack')
-  "set grepprg=ack\ --nogroup
-  "set grepformat=%f:%l:%m
   let g:ctrlp_user_command = 'ack %s --nocolor -g ""'
-else
-  "set grepprg=grep\ -Hnd\ skip\ -r
-  "set grepformat=%f:%l:%m,%f:%l%m,%f\ \ %l%m
 endif
+
+" ignore dossier et fichier dans ctrlp
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\.git$\|\.yardoc\|public$|log\|tmp$',
-  \ 'file': '\.so$\|\.dat$|\.DS_Store$'
+  \ 'dir':  '\.git$\|\.yardoc\|public$\|log\|tmp$',
+  \ 'file': '\v\.(exe|so|dll|dat|DS_Store|o|a)$',
   \ }
 
+" option de recherche quand grep est utilisé dans vim
 set grepprg=grep\ -Hnd\ skip\ -r
 set grepformat=%f:%l:%m,%f:%l%m,%f\ \ %l%m
 " quickfix toujours en bas de la fenêtre
@@ -390,22 +499,8 @@ autocmd QuickFixCmdPost *grep* cwindow
 
 "FONCTIONS
 " ----------------------------------------------------------------------------
-" HLNext
-" permet de faire clignoter un pattern
-function! HLNext (blinktime)
-  highlight whiteonred ctermfg=white ctermbg=red guifg=#fff8dc guibg=#a52a2a
-  let [bufnum, lnum, col, off] = getpos('.')
-  let matchlen = strlen(matchstr(strpart(getline('.'),col-1),@/))
-  let target_pat = '\c\%#'.@/
-  let ring = matchadd('WhiteOnRed', target_pat, 101)
-  redraw
-  exec 'sleep ' . float2nr(a:blinktime * 500) . 'm'
-  call matchdelete(ring)
-  redraw
-endfunction
-
 " Preview
-" permet de faire un surlignage d un pattern dans une preview
+" permet de faire un surlignage d'un pattern dans une preview
 function! s:preview()
   normal! zv
   normal! zz
@@ -415,45 +510,51 @@ function! s:preview()
   wincmd p
 endfunction
 
-"GrepQuixFix
-" Permet de filter les resultats dans le quickfix
-function! GrepQuickFix(pat)
-  let all = getqflist()
-  for d in all
-    if bufname(d['bufnr']) !~ a:pat && d['text'] !~ a:pat
-        call remove(all, index(all,d))
+"ToggleHighlight_c1
+let s:enabled1 = 0
+let s:enabled2 = 0
+function! ToggleHighlight_c1(column1, column2)
+  if exists('+colorcolumn')
+    if s:enabled1
+      if s:enabled2
+        let &colorcolumn=a:column2.",".join(range(a:column2,320),",")
+      else
+        let &colorcolumn=0
+      endif
+      let s:enabled1 = 0
+    else
+      if s:enabled2
+        let &colorcolumn=a:column1.",".join(range(a:column2,320),",")
+      else
+        let &colorcolumn=a:column1
+      endif
+      let s:enabled1 = 1
     endif
-  endfor
-  call setqflist(all)
-endfunction
-command! -nargs=* SVNdiff call GrepQuickFix(<q-args>)
-
-"JGU_svn_diff
-" Permet de faire un diff svn a partir du path
-" TODO BUG à Corriger : 
-"   1. Dans un netrw à l ouverture il ouvre une fenetre vide sans nom
-"      meme si il n y a qu une seul ligne
-"   2. Trouver le moyen de ne pas avoir a sauvegarder le fichier et de
-"      ne pas avoir a faire de q! pour quitter le buffer
-"   3. Si le buffer est déjà ouvert il faut tout effacer et recoller
-"      ensuite
-function! JGU_svn_diff(path)
-  let path = a:path
-  vertical new __SVN_DIFF__
-  setlocal syn=diff ft=diff
-  execute ":read ! svn diff " . a:path
-  go
-  "nombre de ligne dans la fenetre
-  let nmatches = line("w$")
-  if nmatches == 1
-    bdelete!
   endif
 endfunction
-command! -nargs=1 -complete=dir SVNdiff call JGU_svn_diff(<f-args>)
-
-"LS
-" Permet de faire un LS puis de changer les buffers
-function! LS_buffer()
-  ls
+function! ToggleHighlight_c2(column1, column2)
+  if exists('+colorcolumn')
+    if s:enabled2
+      if s:enabled1
+        let &colorcolumn=a:column1
+      else
+        let &colorcolumn=0
+      endif
+      let s:enabled2 = 0
+    else
+      if s:enabled1
+        let &colorcolumn=a:column1.",".join(range(a:column2,320),",")
+      else
+        let &colorcolumn=a:column2.",".join(range(a:column2,320),",")
+      endif
+      let s:enabled2 = 1
+    endif
+  endif
 endfunction
-command! -nargs=0 LS call LS_buffer()
+
+" Fix_netrw_fixmaps
+" Supprime le raccourcis s
+function! Fix_netrw_fixmaps()
+  unmap <buffer> s
+  unmap! <buffer> s
+endfunction
