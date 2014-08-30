@@ -1,0 +1,57 @@
+!URxvt.font:-*-terminus-medium-r-normal--12-120-72-72-c-60-*-15
+URxvt.font:-*-terminus-medium-r-normal--14-140-72-72-c-80-*-15
+!URxvt.font:-*-terminus-medium-r-normal--16-160-72-72-c-80-*-15
+!URxvt.font:-*-terminus-medium-r-normal--18-180-72-72-c-100-*-15
+!URxvt.font:-*-terminus-medium-r-normal--20-200-72-72-c-100-*-15
+!URxvt.font:-*-terminus-medium-r-normal--22-220-72-72-c-110-*-15
+!URxvt.font:-*-terminus-medium-r-normal--24-240-72-72-c-120-*-15
+!URxvt.font:-*-terminus-medium-r-normal--28-280-72-72-c-140-*-15
+!URxvt.font:-*-terminus-medium-r-normal--32-320-72-72-c-160-*-15
+
+!URxvt.boldfont:-*-terminus-bold-r-normal--12-120-72-72-c-60-*-15
+URxvt.boldfont:-*-terminus-bold-r-normal--14-140-72-72-c-80-*-15
+!URxvt.boldfont:-*-terminus-bold-r-normal--16-160-72-72-c-80-*-15
+!URxvt.boldfont:-*-terminus-bold-r-normal--18-180-72-72-c-100-*-15
+!URxvt.boldfont:-*-terminus-bold-r-normal--20-200-72-72-c-100-*-15
+!URxvt.boldfont:-*-terminus-bold-r-normal--22-220-72-72-c-110-*-15
+!URxvt.boldfont:-*-terminus-bold-r-normal--24-240-72-72-c-120-*-15
+!URxvt.boldfont:-*-terminus-bold-r-normal--28-280-72-72-c-140-*-15
+!URxvt.boldfont:-*-terminus-bold-r-normal--32-320-72-72-c-160-*-15
+URxvt.scrollBar: false
+
+
+*foreground: #D7D0C7
+*background: #151515
+
+!black
+! *color0:     #AF875F
+! *color8:     #AF875F
+*color0:     #101010
+*color8:     #404040
+!red
+*color1:     #E84F4F
+*color9:     #D23D3D
+!green
+*color2:     #B8D68C
+*color10:    #A0CF5D
+!yellow
+*color3:     #E1AA5D
+*color11:    #F39D21
+!blue
+*color4:     #7DC1CF
+*color12:    #4E9FB1
+!magenta
+*color5:     #9B64FB
+*color13:    #8542FF
+!cyan
+*color6:     #6D878D
+*color14:    #42717B
+!white
+*color7:     #dddddd
+*color15:    #dddddd
+
+URxvt*borderColor:        #151515
+URxvt*colorBD:            #ffffff
+URxvt*cursorColor:        #ff8939
+URxvt*cursorColor2:       #151515
+
