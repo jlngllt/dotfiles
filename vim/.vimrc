@@ -18,26 +18,27 @@ else
   set rtp+=~/.vim/bundle/Vundle.vim/
   call vundle#begin()
 endif
-Bundle 'gmarik/Vundle.vim'
+Plugin 'gmarik/Vundle.vim'
 " installation de plugin
-Plugin 'godlygeek/csapprox'
 Plugin 'majutsushi/tagbar'
-Plugin 'kien/rainbow_parentheses.vim'
-Plugin 'tpope/vim-unimpaired'
-Plugin 'tpope/vim-repeat'
 Plugin 'kien/ctrlp.vim'
-Plugin 'tpope/vim-rsi'
-Plugin 'flazz/vim-colorschemes'
-Plugin 'vcscommand.vim'
+Plugin 'vim-scripts/vcscommand.vim'
+" color
+Plugin 'junegunn/seoul256.vim'
+Plugin 'morhetz/gruvbox'
+Plugin 'tomasr/molokai'
+Plugin 'chriskempson/vim-tomorrow-theme'
+Plugin 'w0ng/vim-hybrid'
+Plugin 'jonathanfilip/vim-lucius'
 call vundle#end()
 
 " GVIM
 " configuration de gvim
 if has("gui_running")
   if has('win32') || has ('win64')
-    set guifont=DejaVu_Sans_Mono:h8:cANSI
+    set guifont=DejaVu_Sans_Mono:h10:cANSI
   else
-    set guifont=DejaVu\ Sans\ Mono\ 8
+    set guifont=DejaVu\ Sans\ Mono\ 10
   endif
   set guioptions-=m  "remove menu bar
   set guioptions-=T  "remove toolbar
@@ -79,9 +80,12 @@ set whichwrap=b,s
 set linebreak
 set showbreak=>\
 set breakat=\ \	;:,!?
+" affichage d'une ligne
+set cursorline
 " affiche les numéros de lignes
-set relativenumber
-set number
+" relativenumber ralentit vim
+set norelativenumber
+set nonumber
 set numberwidth=4
 " ne ferme pas le(s) buffer(s) (permet d'ouvrir un autre fichier sans avoir
 "   besoin de sauvegarder le buffer en cours si il a déjà été modifié)
@@ -104,7 +108,7 @@ set smartcase
 " affiche le pattern de recherche lorsqu'il est écrit
 set incsearch
 " ignore certains type de fichier
-set wildignore=*.swp,*.bak,*.pyc,*.class,*.o,*.exe,*.a,*.out
+set wildignore=*.swp,*.bak,*.pyc,*.class,*.o,*.exe,*.a,*.out,*.svn
 " relecture du fichier si il a été changer à l'extérieur de vim
 set autoread
 " sauvegarde de l'historique des commandes
@@ -231,6 +235,10 @@ set shortmess=atToOI
 set timeout timeoutlen=3000 ttimeoutlen=100
 " programme utiliser lors la commande K
 set keywordprg=:help
+" aligne les arguments d'une fonction lorsque l'on saute une ligne
+set cino=b1,t0,(0,W8
+" backspace disponible en mode insertion
+set backspace=indent,eol,start
 
 " COLOR
 " ----------------------------------------------------------------------------
@@ -240,56 +248,65 @@ syntax on
 " syntaxique
 set t_Co=256
 
-"" ---------------------
-"" Système de notation des couleurs pour savoir si elles sont utilisables dans
+" ---------------------
+" Système de notation des couleurs pour savoir si elles sont utilisables dans
 " tout les cas. (diff - spell - search - colorcolumn)
-"" TEMPLATE :
-"" NOM_DE_LA_COULEUR DIFF SPELL SEARCH COLORCOLUMN (X -> NOK - O -> OK)
-"" EXEMPLE : (couleur github diff => NOK Spell => NOK Search => OK CC => OK)
-"" GITHUB XXOO
-"" ---------------------
+" TEMPLATE :
+" NOM_DE_LA_COULEUR DIFF SPELL SEARCH COLORCOLUMN (X -> NOK - O -> OK)
+" EXEMPLE : (couleur github diff => NOK Spell => NOK Search => OK CC => OK)
+" GITHUB XXOO
+" ---------------------
 
-"" Couleurs LIGHT
+" Couleurs LIGHT/DARK
 "---------------------
-" GITHUB OOOO
-"colorscheme github
+" lucius OOOO
+"light
+"let g:lucius_style='light'
+"let g:lucius_use_bold=0
+"let g:lucius_contrast_bg='high'
+"let g:lucius_contrast='normal'
+"dark
+"let g:lucius_style='dark'
+
+"colorscheme lucius
 "---------------------
-" Moria XOOX
-"let g:moria_style='white'
-"colorscheme moria
+" seoul256 OOOO
+"light
+"let g:seoul256_background=255
+"dark
+"let g:seoul256_background=230
+"colorscheme seoul256
+"---------------------
+" gruvbox OOOO
+" besoin de lancer le script ~./vim/bundle/gruvbox/gruvbox_256palette.sh
+" pour ne pas avoir de problème de mauvais affichage des couleurs
+" A AJOUTER DANS LE .BASHRC POUR AVOIR LES COULEURS DÉFINIT DIRECTEMENT AU
+" LANCEMENT DU SHELL :
+"     GRUVBOX_SHELL="$HOME/.vim/bundle/gruvbox/gruvbox_256palette.sh"
+"     [[ -s $GRUVBOX_SHELL ]] && source $GRUVBOX_SHELL
+
+"set background=light
+""set background=dark
+"" Si le characteres en italic sont supportés
+"if    !has("gui_running") 
+" \ && &term != 'rxvt-unicode-256color'
+" \ && &term != 'screen-256color-italic'
+"  let g:gruvbox_italic=0
+"endif
+"" Suppression des characteres en gras pour une meilleur lisibilité
+"let g:gruvbox_bold=0
+"colorscheme gruvbox
 "---------------------
 
 "" Couleurs DARK
 "---------------------
-" TOMOROW-NIGHT XXOO
-"colorscheme Tomorrow-Night
+" TOMOROW-NIGHT 00OO
+set background=dark
+colorscheme Tomorrow-Night
+"colorscheme Tomorrow-Night-Eighties
 "---------------------
 " Hybrid OOOO
-colorscheme hybrid
-"---------------------
-" Zenburn OOOX
-"colorscheme zenburn
-"---------------------
-" Herald XXOX
-"colorscheme herald
-"---------------------
-" Moria OOOX
-"let moria_style='dark'
-"colorscheme moria
-"---------------------
-" Gruvbox XOOO
-"let g:gruvbox_italic=0
-"set background=dark
-"colorscheme gruvbox
-"---------------------
-" Kolor XOOO
-"colorscheme kolor
-"---------------------
-" Xoria256 XXOX
-"colorscheme xoria256
-"---------------------
-" Wombat XOOX
-"colorscheme wombat
+"colorscheme hybrid
 "---------------------
 
 " La coloration syntaxique pour les documents complexe est légèrement lente.
@@ -303,23 +320,18 @@ syn sync maxlines=500
 nnoremap <F10>  :call ToggleHighlight_c2(80,120)<cr>
 nnoremap <F9>   :call ToggleHighlight_c1(80,120)<cr>
 
-" les couleurs du curseur en mode gui
-"set gcr=a:block
-"" mode aware cursors
-"set gcr+=o:hor50-Cursor
-"set gcr+=n:Cursor
-"set gcr+=i-ci-sm:InsertCursor
-"set gcr+=r-cr:ReplaceCursor-hor20
-"set gcr+=c:CommandCursor
-"set gcr+=v-ve:VisualCursor
-"set gcr+=a:blinkon0
-
 " NETRW
 " ----------------------------------------------------------------------------
 let g:netrw_liststyle = 0
 let g:netrw_alto      = 1
 let g:netrw_altv      = 1
 let g:netrw_banner    = 0
+if has('win32') || has('win64')
+  let g:netrw_localrmdir="rd /s /q"
+else
+  let g:netrw_localrmdir="rm -r"
+endif
+
 
 " FILETYPE/AUTOCMD
 " ----------------------------------------------------------------------------
@@ -339,7 +351,8 @@ autocmd FileType html setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType eruby setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType eco setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType python setlocal ts=4 sts=4 sw=4 expandtab
-autocmd FileType c setlocal ts=4 sts=4 sw=4 expandtab
+" Merci olivier pour ces indentations :D
+autocmd FileType c setlocal ts=3 sts=3 sw=3 expandtab
 autocmd FileType c set omnifunc=ccomplete#Complete
 autocmd FileType vim setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType bash setlocal shiftwidth=2 tabstop=2 expandtab
@@ -356,12 +369,6 @@ autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 " PLUGINS
 " ----------------------------------------------------------------------------
-" Rainbow
-au VimEnter * RainbowParenthesesToggle
-au Syntax   * RainbowParenthesesLoadRound
-au Syntax   * RainbowParenthesesLoadSquare
-au Syntax   * RainbowParenthesesLoadBraces
-
 " TagBar
 nmap <leader>t :Tagbar<cr>
 
@@ -390,7 +397,9 @@ nnoremap <silent> N Nzz
 " cherche l'élément sous le curseur mais ne saute pas à la première occurrence
 " trouvée
 nnoremap <silent>* :let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>
+      \:set hls hls?<cr>
 nnoremap <silent># :let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>
+      \ :set hls hls?<cr>
 " force l'écriture en tant que root
 ab w!! %!sudo tee > /dev/null %
 " recherche avec des regex normal
@@ -398,8 +407,8 @@ nnoremap / /\v
 vnoremap / /\v
 nnoremap ? ?\v
 vnoremap ? ?\v
-" switch h/c
-ab s!! find %:t:r
+" toggle sur l'affichage des numeros de ligne
+nnoremap <f1> :set number! number?<cr>
 
 " supprime le raccourcis sort (s) dans netrw pour pouvoir utiliser ctrl-p à la
 " place
@@ -429,6 +438,9 @@ let g:VCSCommandMapPrefix = "!"
 ""!u VCSUpdate
 ""!U VCSUnlock
 ""!v VCSVimDiff
+nnoremap <silent> !V :call VCSDiffFileVimDiff()<cr>
+nnoremap <silent> !w :call VCSDiffWorkspace()<cr>
+nnoremap <silent> !S :call VCSStatusWorkspace()<cr>
 ""
 "" pour les buffer CVS
 ""
@@ -443,8 +455,8 @@ let g:VCSCommandMapPrefix = "!"
 
 " AG/GREP/SEARCH
 " ----------------------------------------------------------------------------
-nmap  s   [Search]
-xmap  s   [Search]
+nmap  s  [Search]
+xmap  s  [Search]
 nnoremap [Search]   <Nop>
 xnoremap [Search]   <Nop>
 
@@ -463,6 +475,17 @@ nnoremap [Search]G :<C-u>vimgrep /<c-r><c-w>/gj **/*.
 " search trailing space
 nnoremap [Search]<space> /\s\+$/<cr>
 
+if exists("g:ctrl_user_command")
+  unlet g:ctrlp_user_command
+endif
+" ignore dossier et fichier dans ctrlp
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+  \ 'file': '\v\.(exe|so|dll|o|a)$',
+  \ }
+
+" pas de lien symbolique
+let g:ctrlp_follow_symlinks=0
 " ne pas utiliser ctrl_map pour changer le mapping de ctrl-p
 let g:ctrlp_map = '<Nop>'
 " option du local workspace directory dans ctrl-p
@@ -477,16 +500,20 @@ let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:18'
 " type de recherche réalisé avec ctrl-p en fonction des diffèrent système de
 " recherche installé sur le système courant (pour crtl-p)
 if executable('ag')
-  let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
+  let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden --nogroup --hidden
+                                     \ --ignore .git
+                                     \ --ignore **/*.a
+                                     \ --ignore **/*.o
+                                     \ --ignore **/*.bin
+                                     \ --ignore **/*.dia
+                                     \ --ignore .svn
+                                     \ --ignore .hg
+                                     \ --ignore .DS_Store
+                                     \ --ignore "**/*.pyc"
+                                     \ -g ""'
 elseif executable('ack')
   let g:ctrlp_user_command = 'ack %s --nocolor -g ""'
 endif
-
-" ignore dossier et fichier dans ctrlp
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\.git$\|\.yardoc\|public$\|log\|tmp$',
-  \ 'file': '\v\.(exe|so|dll|dat|DS_Store|o|a)$',
-  \ }
 
 " option de recherche quand grep est utilisé dans vim
 set grepprg=grep\ -Hnd\ skip\ -r
@@ -557,4 +584,24 @@ endfunction
 function! Fix_netrw_fixmaps()
   unmap <buffer> s
   unmap! <buffer> s
+endfunction
+
+function! VCSDiffWorkspace()
+  vert new
+  set bt=nofile
+  set ft=diff
+  r ! svn diff */
+  normal gg dd
+endfunction
+
+function! VCSDiffFileVimDiff()
+  execute "tab split " . expand('<cWORD>')
+  VCSVimDiff
+endfunction
+
+function! VCSStatusWorkspace()
+  vert new
+  set bt=nofile
+  r ! svn status */
+  normal gg dd
 endfunction
