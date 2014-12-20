@@ -303,13 +303,16 @@ set t_Co=256
 "" Couleurs DARK
 "---------------------
 " TOMOROW-NIGHT 00OO
-set background=dark
-colorscheme Tomorrow-Night
+"set background=dark
+"colorscheme Tomorrow-Night
 "colorscheme Tomorrow-Night-Eighties
 "---------------------
 " Hybrid OOOO
 "colorscheme hybrid
 "---------------------
+" Molokai OOOO
+let g:rehash256=1
+colorscheme molokai
 
 " La coloration syntaxique pour les documents complexe est légèrement lente.
 " Ajout de cette configuration pour réduire le chargement)
