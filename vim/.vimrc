@@ -143,6 +143,8 @@ set noswapfile
 set directory-=.
 " affiche un titre à la fenêtre
 set title
+set titleold=""
+set titlestring=VIM:\ %F
 " active l'utilisation de la souris
 set mouse=a
 " visual sélection en carré
