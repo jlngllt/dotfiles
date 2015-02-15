@@ -30,6 +30,8 @@ Plugin 'tomasr/molokai'
 Plugin 'chriskempson/vim-tomorrow-theme'
 Plugin 'w0ng/vim-hybrid'
 Plugin 'jonathanfilip/vim-lucius'
+Plugin 'shougo/vimshell'
+Plugin 'shougo/vimproc'
 call vundle#end()
 
 " GVIM
@@ -303,16 +305,16 @@ set t_Co=256
 "" Couleurs DARK
 "---------------------
 " TOMOROW-NIGHT 00OO
-"set background=dark
-"colorscheme Tomorrow-Night
+set background=dark
+colorscheme Tomorrow-Night
 "colorscheme Tomorrow-Night-Eighties
 "---------------------
 " Hybrid OOOO
 "colorscheme hybrid
 "---------------------
 " Molokai OOOO
-let g:rehash256=1
-colorscheme molokai
+"let g:rehash256=1
+"colorscheme molokai
 
 " La coloration syntaxique pour les documents complexe est légèrement lente.
 " Ajout de cette configuration pour réduire le chargement)

@@ -1,5 +1,5 @@
 !URxvt.font:-*-terminus-medium-r-normal--12-120-72-72-c-60-*-15
-URxvt.font:-*-terminus-medium-r-normal--14-140-72-72-c-80-*-15
+!URxvt.font:-*-terminus-medium-r-normal--14-140-72-72-c-80-*-15
 !URxvt.font:-*-terminus-medium-r-normal--16-160-72-72-c-80-*-15
 !URxvt.font:-*-terminus-medium-r-normal--18-180-72-72-c-100-*-15
 !URxvt.font:-*-terminus-medium-r-normal--20-200-72-72-c-100-*-15
@@ -8,8 +8,9 @@ URxvt.font:-*-terminus-medium-r-normal--14-140-72-72-c-80-*-15
 !URxvt.font:-*-terminus-medium-r-normal--28-280-72-72-c-140-*-15
 !URxvt.font:-*-terminus-medium-r-normal--32-320-72-72-c-160-*-15
 
+URxvt.font: xft:Ubuntu Mono:pixelsize=16
 !URxvt.boldfont:-*-terminus-bold-r-normal--12-120-72-72-c-60-*-15
-URxvt.boldfont:-*-terminus-bold-r-normal--14-140-72-72-c-80-*-15
+!URxvt.boldfont:-*-terminus-bold-r-normal--14-140-72-72-c-80-*-15
 !URxvt.boldfont:-*-terminus-bold-r-normal--16-160-72-72-c-80-*-15
 !URxvt.boldfont:-*-terminus-bold-r-normal--18-180-72-72-c-100-*-15
 !URxvt.boldfont:-*-terminus-bold-r-normal--20-200-72-72-c-100-*-15
@@ -54,4 +55,3 @@ URxvt*borderColor:        #151515
 URxvt*colorBD:            #ffffff
 URxvt*cursorColor:        #ff8939
 URxvt*cursorColor2:       #151515
-
