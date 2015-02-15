@@ -11,10 +11,10 @@ then
   alias ls='ls -G'
   alias grep='grep --colour'
 else
-  alias grep='grep --color=always'
-  alias ls='ls -l'
+  alias grep='grep --color=auto'
+  alias ls='ls --color=auto'
 fi
-alias ll='ls -l'
+alias ll='ls -lh'
 alias la='ll -a'
 alias tmux='tmux -2'
 alias shutdown='sudo shutdown -h now'
@@ -36,3 +36,5 @@ then
   # Patch pour ouvrir android studio dans mac
   export STUDIO_JDK=/Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk
 fi
+
+PATH=$PATH:$HOME/bin
