@@ -1,7 +1,9 @@
 " CONFIGURATION GÉNÉRAL
 " ----------------------------------------------------------------------------
 " n'est pas compatible avec vi set nocompatible
-set nocompatible
+if !has('nvim')
+  set nocompatible
+endif
 " option requise pour vundle
 filetype off
 " caractère de la variable <leader>
@@ -10,35 +12,43 @@ let mapleader = ","
 " VUNDLE
 " ----------------------------------------------------------------------------
 " installation de vundle (vundle est le gestionnaire de plugin)
-if has('win32') || has('win64')
-  set rtp+=~/.vim/bundle/Vundle.vim/
-  call vundle#begin('$HOME/.vim/bundle/')
-else
-  " Usual quickstart instructions
-  set rtp+=~/.vim/bundle/Vundle.vim/
-  call vundle#begin()
+let win_path='$HOME/VIM/\.vim'
+let unix_path='$HOME/.vim'
+let win_shell = (has('win32') || has('win64')) && &shellcmdflag =~ '/'
+let vimDir = win_shell ? win_path : unix_path
+if has('nvim')
+  "En general $XDG_CONFIG_HOME=$HOME/.config
+  "si XDG_CONFIG_HOME est vide alors faire la commande suivante :
+  "export XDG_CONFIG_HOME="$HOME/.config"
+  let vimdir='$XDG_CONFIG_HOME/.nvim'
 endif
-Plugin 'gmarik/Vundle.vim'
+
+let &runtimepath .= ',' . expand(vimDir . '/bundle/Vundle.vim')
+call vundle#begin(expand(vimDir . '/bundle'))
+Plugin 'VundleVim/Vundle.vim'
 " installation de plugin
 Plugin 'majutsushi/tagbar'
-Plugin 'kien/ctrlp.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'vim-scripts/vcscommand.vim'
+if v:version > 702
+  Plugin 'Shougo/unite.vim'
+  Plugin 'Shougo/vimfiler.vim'
+endif
 " color
 Plugin 'junegunn/seoul256.vim'
 Plugin 'morhetz/gruvbox'
 Plugin 'tomasr/molokai'
-Plugin 'chriskempson/vim-tomorrow-theme'
 Plugin 'w0ng/vim-hybrid'
 Plugin 'jonathanfilip/vim-lucius'
-Plugin 'shougo/vimshell'
-Plugin 'shougo/vimproc'
+Plugin 'nanotech/jellybeans.vim'
+Plugin 'cocopon/iceberg.vim'
 call vundle#end()
 
 " GVIM
 " configuration de gvim
-if has("gui_running")
+if has('gui_running')
   if has('win32') || has ('win64')
-    set guifont=DejaVu_Sans_Mono:h10:cANSI
+    set guifont=DejaVu_Sans_Mono:h10:cANSI,Consolas:h10:cANSI
   else
     set guifont=DejaVu\ Sans\ Mono\ 10
   endif
@@ -46,6 +56,13 @@ if has("gui_running")
   set guioptions-=T  "remove toolbar
   set guioptions-=r  "remove right-hand scroll bar
   set guioptions-=L  "remove left-hand scroll bar
+
+  set guicursor+=a:blinkon0 "disable all blinking
+  set guicursor+=a:block "only block cursor
+
+  set lines=60 "nombre de ligne au démarage de gvim
+  set columns=120 "nombre de colone au démarage de gvim
+  winpos 430 20 "position de la fenêtre au démarage de gvim
 endif
 
 " BASIC
@@ -58,6 +75,8 @@ filetype plugin indent on
 set showmode
 " affiche les commande taper en bas droite dans la barre de status
 set showcmd
+" desactive le beep
+set noeb vb t_vb=
 " affichage de la barre de status
 set laststatus=2
 " barre de status de 2 lignes de haut
@@ -86,22 +105,30 @@ set breakat=\ \	;:,!?
 set cursorline
 " affiche les numéros de lignes
 " relativenumber ralentit vim
-set norelativenumber
+if has('relativenumber')
+  set norelativenumber
+endif
 set nonumber
 set numberwidth=4
 " ne ferme pas le(s) buffer(s) (permet d'ouvrir un autre fichier sans avoir
 "   besoin de sauvegarder le buffer en cours si il a déjà été modifié)
 " set hidden
-" système d'encodage de caractère dans vim
+" système d'encodage de caractère dans vim, si les caractères affiché sont
+" étrange, il est fort probable que le terminal ou gui ne soit pas configuré
+" pour de l'utf8
 set encoding=utf-8
+" pour convertir un fichier dans un encodage connu different d'utf8 vers utf8
+" faire la commande suivante :
+":e!++enc=utf8
 " paramétrage de la langue pour la correction orthographique
 set spelllang=fr
 " ajout de path des includes pour pouvoir naviguer facilement avec les noms de
 " fichier avec des commandes tel que gf
 set path+=**
-" affiche les espaces et tabulation
+" affiche les espaces, tabulation, fin de ligne et caractère inconnu (qui
+" peuvent générer des erreurs lors des compilations/exécution)
 set list
-set listchars=trail:·,tab:>-,eol:¬
+set listchars=trail:·,tab:>-,eol:¬,nbsp:×
 " ignore la case lors de recherche
 set ignorecase
 " si ignorecase et smartcase sont à ON, la case est active si le pattern
@@ -152,20 +179,27 @@ set mouse=a
 " visual sélection en carré
 set virtualedit=block
 " parfois vim lag quand on scroll
-set lazyredraw
-set ttyfast
+if has('gui_running')
+  set lazyredraw
+elseif !has('win32unix')
+  set lazyredraw
+endif
+if !has('nvim')
+  set ttyfast
+endif
 " pour pouvoir avoir des accents sur windows
 if has('win32') || has('win64')
   lang mess en
 else
   lang mess C
 endif
-if has("gui_running")
+if has('gui_running')
   " plus d'espace entre chaque ligne (améliore la lisibilité)
   set linespace=1
 endif
 " emplacement des tags
-set tags=./tags;
+set tags=tags.prj
+set tags+=~/.tags.clib
 " affiche le menu de complétion meme si il n'y a qu'une seul possibilité
 set completeopt=menuone
 " complétion basée uniquement sur le buffer courant
@@ -240,59 +274,80 @@ set timeout timeoutlen=3000 ttimeoutlen=100
 " programme utiliser lors la commande K
 set keywordprg=:help
 " aligne les arguments d'une fonction lorsque l'on saute une ligne
-set cino=b1,t0,(0,W8
+set cinoptions={0,>1s,e0,^0,n0,:1s,p2s,i1s,(0,u0,W2s
 " backspace disponible en mode insertion
 set backspace=indent,eol,start
+" permet d'utiliser les alias configurer dans le shell
+"set shell=/bin/bash\ -i
 
 " COLOR
 " ----------------------------------------------------------------------------
 " activation de la coloration syntaxique
 syntax on
-" activation des 256 couleurs (d'un bon terminal) pour la coloration 
+" activation des 256 couleurs (d'un bon terminal) pour la coloration
 " syntaxique
-set t_Co=256
+if !has('nvim')
+  set t_Co=256
+endif
+if !has('gui_running')
+  if has('win32')
+    set term=xterm
+    let &t_AB="\e[48;5;%dm"
+    let &t_AF="\e[38;5;%dm"
+  endif
+endif
 
-" ---------------------
-" Système de notation des couleurs pour savoir si elles sont utilisables dans
-" tout les cas. (diff - spell - search - colorcolumn)
-" TEMPLATE :
-" NOM_DE_LA_COULEUR DIFF SPELL SEARCH COLORCOLUMN (X -> NOK - O -> OK)
-" EXEMPLE : (couleur github diff => NOK Spell => NOK Search => OK CC => OK)
-" GITHUB XXOO
-" ---------------------
+"" ---------------------
+"" Système de notation des couleurs pour savoir si elles sont utilisables dans
+"" tout les cas. (diff - spell - search - colorcolumn)
+"" TEMPLATE :
+"" NOM_DE_LA_COULEUR DIFF SPELL SEARCH COLORCOLUMN (X -> NOK - O -> OK)
+"" EXEMPLE : (couleur github diff => NOK Spell => NOK Search => OK CC => OK)
+"" GITHUB XXOO
+"" ---------------------
 
-" Couleurs LIGHT/DARK
-"---------------------
-" lucius OOOO
-"light
+"" Couleurs LIGHT/DARK
+"" ===================
+""---------------------
+"" Lucius OOOO
+""light
 "let g:lucius_style='light'
 "let g:lucius_use_bold=0
 "let g:lucius_contrast_bg='high'
 "let g:lucius_contrast='normal'
-"dark
-"let g:lucius_style='dark'
-
 "colorscheme lucius
-"---------------------
-" seoul256 OOOO
-"light
+"" OU
+""dark
+"let g:lucius_style='dark'
+"let g:lucius_use_bold=0
+"let g:lucius_contrast_bg='high'
+"let g:lucius_contrast='normal'
+"colorscheme lucius
+
+""---------------------
+"" Seoul256 OOOO
+""light
 "let g:seoul256_background=255
-"dark
+"colorscheme seoul256
+"" OU
+""dark
 "let g:seoul256_background=230
 "colorscheme seoul256
-"---------------------
-" gruvbox OOOO
-" besoin de lancer le script ~./vim/bundle/gruvbox/gruvbox_256palette.sh
-" pour ne pas avoir de problème de mauvais affichage des couleurs
-" A AJOUTER DANS LE .BASHRC POUR AVOIR LES COULEURS DÉFINIT DIRECTEMENT AU
-" LANCEMENT DU SHELL :
-"     GRUVBOX_SHELL="$HOME/.vim/bundle/gruvbox/gruvbox_256palette.sh"
-"     [[ -s $GRUVBOX_SHELL ]] && source $GRUVBOX_SHELL
 
-"set background=light
-""set background=dark
+""---------------------
+"" gruvbox OOOO
+"" besoin de lancer le script ~./vim/bundle/gruvbox/gruvbox_256palette.sh
+"" pour ne pas avoir de problème de mauvais affichage des couleurs
+"" A AJOUTER DANS LE .BASHRC POUR AVOIR LES COULEURS DÉFINIT DIRECTEMENT AU
+"" LANCEMENT DU SHELL :
+""     GRUVBOX_SHELL="$HOME/.vim/bundle/gruvbox/gruvbox_256palette.sh"
+""     [[ -s $GRUVBOX_SHELL ]] && source $GRUVBOX_SHELL
+"
+""set background=light
+"" OU
+"set background=dark
 "" Si le characteres en italic sont supportés
-"if    !has("gui_running") 
+"if !has('gui_running')
 " \ && &term != 'rxvt-unicode-256color'
 " \ && &term != 'screen-256color-italic'
 "  let g:gruvbox_italic=0
@@ -303,18 +358,35 @@ set t_Co=256
 "---------------------
 
 "" Couleurs DARK
-"---------------------
-" TOMOROW-NIGHT 00OO
+"" =============
+""---------------------
+"" TOMOROW-NIGHT 00OO
+"set background=dark
+"colorscheme Tomorrow-Night
+"" OU
+""colorscheme Tomorrow-Night-Eighties
+
+""---------------------
+"" Hybrid OOOO
 set background=dark
-colorscheme Tomorrow-Night
-"colorscheme Tomorrow-Night-Eighties
-"---------------------
-" Hybrid OOOO
-"colorscheme hybrid
-"---------------------
-" Molokai OOOO
-"let g:rehash256=1
+colorscheme hybrid
+
+""---------------------
+"" molokai OOOO
+"let g:molokai_original=1
+"if !has('gui_running')
+"  let g:rehash256=1
+"endif
 "colorscheme molokai
+
+""---------------------
+"" jellybeans OOOO
+"colorscheme jellybeans
+
+""---------------------
+"" jellybeans OOOO
+""colorscheme iceberg
+""---------------------
 
 " La coloration syntaxique pour les documents complexe est légèrement lente.
 " Ajout de cette configuration pour réduire le chargement)
@@ -324,15 +396,18 @@ syn sync maxlines=500
 
 " Si on peut on highlight on fait une bande a 80 lignes et on fait une grosse
 " bande large à 120
-nnoremap <F10>  :call ToggleHighlight_c2(80,120)<cr>
-nnoremap <F9>   :call ToggleHighlight_c1(80,120)<cr>
+if exists('+colorcolumn')
+  nnoremap <F10>  :call ToggleHighlight_c2(80,120)<cr>
+  nnoremap <F9>   :call ToggleHighlight_c1(80,120)<cr>
+endif
 
 " NETRW
 " ----------------------------------------------------------------------------
-let g:netrw_liststyle = 0
-let g:netrw_alto      = 1
-let g:netrw_altv      = 1
-let g:netrw_banner    = 0
+let g:netrw_liststyle   = 0
+let g:netrw_alto        = 1
+let g:netrw_altv        = 1
+let g:netrw_banner      = 0
+let g:netrw_fast_browse = 2
 if has('win32') || has('win64')
   let g:netrw_localrmdir="rd /s /q"
 else
@@ -342,13 +417,14 @@ endif
 
 " FILETYPE/AUTOCMD
 " ----------------------------------------------------------------------------
-au BufRead, BufNewFile {Gemfile, Rakefile, Vagrantfile, Thorfile, config.ru}
-      \ set ft=ruby
-au BufRead, BufNewFile {*.md} set ft=markdown
-autocmd BufNewFile,BufRead *.txt set filetype=txt
+autocmd BufNewFile,BufRead Gemfile, [rR]akefile, Vagrantfile, Thorfile, config.ru
+      \ setf ruby
+autocmd BufNewFile,BufRead *.md setf markdown
+autocmd BufNewFile,BufRead *.txt setf txt
 autocmd FileType txt setlocal textwidth=78 wrapmargin=2 tabstop=8 shiftwidth=8
 autocmd FileType markdown setlocal wrap expandtab
 autocmd FileType ruby setlocal shiftwidth=2 tabstop=2 expandtab
+autocmd FileType lua setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType javascript setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType coffee setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType handlebars setlocal shiftwidth=2 tabstop=2 expandtab
@@ -357,22 +433,27 @@ autocmd FileType css setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType html setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType eruby setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType eco setlocal shiftwidth=2 tabstop=2 expandtab
+autocmd FileType xml setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType python setlocal ts=4 sts=4 sw=4 expandtab
 " Merci olivier pour ces indentations :D
 autocmd FileType c setlocal ts=3 sts=3 sw=3 expandtab
 autocmd FileType c set omnifunc=ccomplete#Complete
 autocmd FileType vim setlocal shiftwidth=2 tabstop=2 expandtab
-autocmd FileType bash setlocal shiftwidth=2 tabstop=2 expandtab
+autocmd FileType bash,sh setlocal shiftwidth=2 tabstop=2 expandtab
 
 autocmd FileType qf nnoremap <buffer> p <CR>:call <SID>preview()<CR>
-autocmd BufReadPost quickfix setlocal colorcolumn=0
-autocmd Filetype netrw setlocal colorcolumn=0
+if exists('+colorcolumn')
+  autocmd BufReadPost quickfix setlocal colorcolumn=0
+  autocmd Filetype netrw setlocal colorcolumn=0
+endif
 autocmd BufReadPost quickfix set modifiable
 
 " enlève le sur lignage de la ligne et colonne dans la fenêtre tagbar
 autocmd FileType tagbar setlocal nocursorline nocursorcolumn
 " enlève le commentaire automatique après qu'une ligne commenté soit écrite
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+" pas de flash
+autocmd GUIEnter * set visualbell t_vb=
 
 " PLUGINS
 " ----------------------------------------------------------------------------
@@ -387,8 +468,13 @@ nmap <space> :set hls!<Bar>:set hls?<CR>
 nmap <F4> :set expandtab   tabstop=4 shiftwidth=4  softtabstop=4<CR>
 nmap <F2> :set expandtab   tabstop=2 shiftwidth=2  softtabstop=2<CR>
 nmap <F3> :set expandtab   tabstop=3 shiftwidth=3  softtabstop=3<CR>
+" réduction du timeout
+set timeoutlen=650
 " activation de la correction orthographique
-nmap <F5> :!ctags -R . --c-kinds=+p --fields=+iaS --extra=+q
+nmap <F5> :!ctags -n -o tags.prj -R --exclude=*.js --exclude=*.html --exclude=*.vim --c-kinds=+p --fields=+iaS --extra=+q .
+if has('unix') || has('mac')
+  nmap <F6> :!ctags -n -o ~/.tags.clib -R --c-kinds=+p --fields=+iaS --extra=+q /usr/include
+endif
 " activation de la correction orthographique
 nmap <F8> :set spell!<bar>set spell?<CR>
 " raccourcis pour faciliter la substitution de texte
@@ -405,7 +491,7 @@ nnoremap <silent> N Nzz
 " trouvée
 nnoremap <silent>* :let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>
       \:set hls hls?<cr>
-nnoremap <silent># :let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>
+nnoremap <silent># :let @/='<C-R>=expand("<cword>")<CR>'<CR>
       \ :set hls hls?<cr>
 " force l'écriture en tant que root
 ab w!! %!sudo tee > /dev/null %
@@ -420,9 +506,50 @@ nnoremap <f1> :set number! number?<cr>
 " supprime le raccourcis sort (s) dans netrw pour pouvoir utiliser ctrl-p à la
 " place
 augroup netrw_fixmaps
-  autocmd!
-  autocmd filetype netrw call Fix_netrw_fixmaps()
+  if !has('win32unix')
+    autocmd!
+    autocmd filetype netrw :call Fix_netrw_fixmaps()
+  endif
 augroup END
+
+if !has('win32') || !has('win64')
+  augroup dirdiff_maps
+  autocmd!
+  autocmd filetype dirdiff :call Dirdiff_map()
+  augroup END
+endif
+
+" abreviation tabc -> tc pour M. P364Y13
+cnoreabbrev tc tabc
+
+" maximize window
+nmap <F11> <Nop>
+nnoremap <F11> <Nop>
+xnoremap <F11> <Nop>
+inoremap <F11> <Nop>
+nmap <S-F11> <Nop>
+nnoremap <S-F11> <Nop>
+xnoremap <S-F11> <Nop>
+inoremap <S-F11> <Nop>
+nmap <C-F11> <Nop>
+nnoremap <C-F11> <Nop>
+xnoremap <C-F11> <Nop>
+inoremap <C-F11> <Nop>
+
+if has('gui_running')
+  nnoremap <F11> :call ToggleWindowSize(0)<CR>
+  nnoremap <S-F11> :call ToggleWindowSize(1)<CR>
+  nnoremap <C-F11> :call ToggleWindowSize(2)<CR>
+  imap <F11> <C-O><F11>
+  imap <S-F11> <C-O><S-F11>
+  imap <C-F11> <C-O><C-F11>
+endif
+
+nnoremap Q <Nop>
+
+if has('nvim')
+  tnoremap <Esc> <c-\><c-n>
+endif
 
 " VERSION CONTROL
 " ----------------------------------------------------------------------------
@@ -445,9 +572,10 @@ let g:VCSCommandMapPrefix = "!"
 ""!u VCSUpdate
 ""!U VCSUnlock
 ""!v VCSVimDiff
-nnoremap <silent> !V :call VCSDiffFileVimDiff()<cr>
-nnoremap <silent> !w :call VCSDiffWorkspace()<cr>
-nnoremap <silent> !S :call VCSStatusWorkspace()<cr>
+if !has('win32') || !has('win64')
+  nnoremap <silent> !V :call VCSDiffFileVimDiff()<cr>
+  nnoremap <silent> !S :call VCSStatusWorkspace()<cr>
+endif
 ""
 "" pour les buffer CVS
 ""
@@ -488,11 +616,11 @@ endif
 " ignore dossier et fichier dans ctrlp
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-  \ 'file': '\v\.(exe|so|dll|o|a)$',
+  \ 'file': '\v\.(exe|so|dll|o|a|tar|pdf|xls|zip)$',
   \ }
 
-" pas de lien symbolique
-let g:ctrlp_follow_symlinks=0
+" suis les lien symbolique
+let g:ctrlp_follow_symlinks=1
 " ne pas utiliser ctrl_map pour changer le mapping de ctrl-p
 let g:ctrlp_map = '<Nop>'
 " option du local workspace directory dans ctrl-p
@@ -529,7 +657,6 @@ set grepformat=%f:%l:%m,%f:%l%m,%f\ \ %l%m
 autocmd FileType qf wincmd J
 " fenêtre quickfix pour cwindow
 autocmd QuickFixCmdPost *grep* cwindow
-
 
 "FONCTIONS
 " ----------------------------------------------------------------------------
@@ -591,24 +718,78 @@ endfunction
 function! Fix_netrw_fixmaps()
   unmap <buffer> s
   unmap! <buffer> s
-endfunction
-
-function! VCSDiffWorkspace()
-  vert new
-  set bt=nofile
-  set ft=diff
-  r ! svn diff */
-  normal gg dd
+  unmap <buffer> S
+  unmap! <buffer> S
 endfunction
 
 function! VCSDiffFileVimDiff()
   execute "tab split " . expand('<cWORD>')
   VCSVimDiff
+  normal gg
 endfunction
 
 function! VCSStatusWorkspace()
-  vert new
+  tabe
   set bt=nofile
-  r ! svn status */
+  r ! svn status .
   normal gg dd
 endfunction
+
+function! JGUDiffDir(dir1, dir2)
+  tabe
+  set bt=nofile
+  set ft=dirdiff
+  execute "r ! LANG=C diff -rq ".a:dir1." ".a:dir2. " | grep differ | awk '{print $2\" \"$4}' | grep -v '\.svn'"
+  normal gg dd
+endfunction
+command! -nargs=* -complete=dir DirDiff silent call JGUDiffDir (<f-args>)
+
+" Création du diff pour dirdiff
+function! Dirdiff_map()
+  nnoremap <silent> ²V :call JGUDirDiff_vim()<cr>
+endfunction
+
+function! JGUDirDiff_vim()
+  let line=getline('.')
+  execute "tab split " . expand('<cWORD>')
+  execute ":args ". l:line ." | vertical all | windo diffthis"
+  normal gg
+endfunction
+
+function! ToggleWindowSize(act)
+  if a:act < 0 || a:act > 2 | return | endif
+  let posX = getwinposx()
+  let posY = getwinposy()
+  let actTab = "XXX__X_XR__XX_X__RRRR__R"
+  let idx = ((exists("g:twsWM") + exists("g:twsHM") * 2) * 3 + a:act) * 2
+  let actW = strpart(actTab, idx, 1)
+  let actH = strpart(actTab, idx + 1, 1)
+  " note. g:tws + [Width,Height,X,Y] + [Maximized,Saved]
+  if actW == "X"
+    let g:twsWS = &columns | let g:twsXS = posX
+    set columns=999
+    let posX = getwinposx()
+    let g:twsWM = &columns | let g:twsXM = posX
+  elseif actW == "R"
+    if g:twsWM == &columns
+      let &columns = g:twsWS
+      if g:twsXM == posX | let posX = g:twsXS | endif
+    endif
+    unlet g:twsWM g:twsWS g:twsXM g:twsXS
+  endif
+  if actH == "X"
+    let g:twsHS = &lines | let g:twsYS = posY
+    set lines=999
+    let posY = getwinposy()
+    let g:twsHM = &lines | let g:twsYM = posY
+  elseif actH == "R"
+    if g:twsHM == &lines
+      let &lines = g:twsHS
+      if g:twsYM == posY | let posY = g:twsYS | endif
+    endif
+    unlet g:twsHM g:twsHS g:twsYM g:twsYS
+  endif
+  execute "winpos " . posX . " " . posY
+endfunction
+
+command! -nargs=1 Silent execute ':silent !'.<q-args> | execute ':redraw!'
