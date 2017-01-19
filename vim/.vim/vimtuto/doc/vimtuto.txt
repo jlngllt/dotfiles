@@ -1,0 +1,592 @@
+*vimtuto.txt*   Tutorial pour Vim version >7.2
+*VimTuto* *TutorialVim* *TutoVim* *tutovim* *vimtuto* *tutorialvim* *tuto*
+*Tuto* *Tutorial* *tutorial*
+===============================================================================
+#                   ______   __  __    ______   ______                        #
+#                  /\__  _\ /\ \/\ \  /\__  _\ /\  __ \                       #
+#                  \/_/\ \/ \ \ \_\ \ \/_/\ \/ \ \ \/\ \                      #
+#                     \ \_\  \ \_____\   \ \_\  \ \_____\                     #
+#                      \/_/   \/_____/    \/_/   \/_____/                     #
+#                                                                         jgu #
+===============================================================================
+aide : Faire un <s-k> sur les variables |var| pour pouvoir y accéder
+       directement. La description de ces variables peut être définit dans des
+       fichiers différents de celui-ci.
+aide : <s-k> = <shift-k> = K
+aide : <c-k> = <ctrl-k>
+aide : Une variable entre [] ex: [var] est optionnel
+aide : Une variable entre {} ex: {var} est obligatoire
+aide : buffer ~= fichier
+aide : ~= = presque :)
+aide : Dans le fichier de configuration <leader> = ','
+===============================================================================
+SOMMAIRE                                                        *tuto-contents*
+
+    1. Liste de commandes.............................|tuto-cmd-list|
+    1.1. Édit.........................................|tuto-edit|
+    1.2. Déplacement..................................|tuto-deplacement|
+    1.2.1. Motion.....................................|tuto-motion|
+    1.2.2. Autre déplacement..........................|tuto-autre-deplacement|
+    1.3. Insertion/Modification.......................|tuto-insert-change|
+    1.4. Undo/Redo....................................|tuto-undo-redo|
+    1.5. Suppression/Substitution.....................|tuto-del-subs|
+    1.6. Copie/Colle/Déplace..........................|tuto-copy-paste|
+    1.7. Recherche....................................|tuto-search|
+    1.8. Sélection....................................|tuto-select|
+    1.9. Sélection d'objet............................|tuto-object-select|
+    1.10. Operateur...................................|tuto-operator|
+    1.11. Split.......................................|tuto-split|
+    1.12. Répétition..................................|tuto-repeat|
+    1.13. Ligne de Commande...........................|tuto-cmd-line|
+    1.14. Folder......................................|tuto-folder|
+    1.15. VimDiff.....................................|tuto-vimdiff|
+    1.16. Complétion..................................|tuto-complete|
+    1.17. Tags........................................|tuto-tags|
+    1.18. Quickfix....................................|tuto-quickfix|
+    1.19. Fonction complexes..........................|tuto-complexe|
+    1.20. Orthographe.................................|tuto-spell|
+    1.21. Fonctions ajoutées..........................|tuto-add|
+    1.22. Autres fonctionnalités......................|tuto-other|
+    2. Description de Commandes.......................|tuto-cmd|
+    2.1.  Lister les modifications SVN................|tuto-svn-modif|
+    2.2.  Diff d'un fichier avec la base SVN..........|tuto-svn-diff|
+    3. TODO...........................................|tuto-todo|
+
+===============================================================================
+LISTE DE COMMANDES                                              *tuto-cmd-list*
+-------------------------------------------------------------------------------
+                                                                    *tuto-edit*
+Edition:~
+  ':e[dit] [path]'    Ouvrir un buffer. |:e|
+  ':q'                Fermer un buffer. |:q|
+  ':w [path]'         Sauvegarder un buffer. |:w|
+  ':tabe[dit] [path]' Ouvrir un onglet. |:tabe|
+  ':tabc[lose]'       Fermer un onglet. |:tabc|
+  'gf'                Ouvre le fichier sous le curseur à la place du buffer
+                        courant. |gf|
+  '<c-w>gf'           Ouvre le fichier sous le curseur dans un onglet.
+                        |ctrl-w_gf|
+  'E[xplore]'         Ouvre l'explorateur de fichier. |netrw|
+
+  Remarque:~
+    Pour plus de détails sur les editions -> |editing|
+-------------------------------------------------------------------------------
+                                                             *tuto-deplacement*
+Deplacement:~
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                                                  *tuto-motion*
+                     Un caractère vers le:
+  'k'                     haut |k|
+'h' 'l'               gauche |h| |l| droite
+  'j'                      bas |j|
+  'w'                 Déplacement d'un mot |w| vers la droite. ->
+  'W'                 Déplacement d'un ensemble de mots attachés. |W| ->
+  'b'                 Déplacement d'un mot |b| vers la gauche. <-
+  'B'                 Déplacement d'un ensemble de mots attachés. |B| <-
+  'e'                 Déplacement jusqu'à la fin du mot. |e| ->
+  'E'                 Déplacement jusqu'à la fin d'un ensemble de mots
+                        attachés. |E| ->
+  'ge'                Déplacement sur la fin du mot d'avant. |ge| <-
+  'gE'                Déplacement sur la fin de l'ensemble de mots attachés
+                        d'avant. |gE| ->
+  '0'                 Se déplace au début de la ligne. |0|
+  '$'                 Se déplace a la fin de la ligne. |$|
+  'gm'                Déplacement au milieu de la ligne |gm|
+  '_'                 Se déplace sur le premier caractère de la ligne. |_|
+  'f{char}'           Déplacement vers l'avant de la ligne jusqu'à la
+                        prochaine occurrence de {char}. |f| ->
+  'F{char}'           Déplacement vers l'arrière de la ligne jusqu'à la
+                        prochaine occurrence de {char}. |F| <-
+  't{char}'           Comme |f| mais s'arrête devant {char}. |t| ->
+  'T{char}'           Comme |F| mais s'arrête devant {char}. |T| <-
+  ';'                 Une fois la commande |f|F|t|T| exécutée |;| passe au
+                        {char} suivant. |;|
+  ','                 Une fois la commande |f|F|t|T| exécutée |;| passe au
+                        {char} précèdent. |,|
+  '%'                 Saut d'une '{' ou '(' à l'autre ')' ou '}', fonctionne
+                        aussi sur plusieurs ligne. |%|
+  '[['                Saute à la dernière définition de fonction. |[[|
+  ']]'                Saute à la prochaine définition de fonction. |]]|
+  '}'                 Saute à la fin du paragraphe. |}|
+  '{'                 Saute au début du paragraphe. |}|
+  ')'                 Saute à la fin de phrase. |)|
+  '('                 Saute au début de la phrase. |(|
+  'G'                 Déplacement à la dernière ligne du fichier. |G|
+  'gg'                Déplacement à la première ligne du fichier. |gg|
+  '<s-h>'             Se déplace au plus haut de la page. |H|
+  '<s-m>'             Se déplace en milieu de page. |M|
+  '<s-l>'             Se déplace au plus bas de la page. |L|
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                                       *tuto-autre-deplacement*
+  '<c-u>'             Une demi page vers le haut. |<c-u>|
+  '<c-d>'             Une demi page vers le bas. |<c-d>|
+  '<c-b>'             Une page vers le haut. |<c-b>|
+  '<c-f>'             Une page vers le bas. |<c-f>|
+  '<c-e>'             Fait défiler la page vers le haut mais garde le curseur
+                        sur le même caractère. |ctrl-e|
+  '<c-y>'             Fait défiler la page vers le bas mais garde le curseur
+                        sur le même caractère. |ctrl-y|
+  'zz'                Recentre la fenêtre sur le curseur. |zz|
+  'zt'                Déplace la fenêtre vers le haut, avec le curseur en haut
+                        de page. |zt|
+  'zb'                Déplace la fenêtre vers le bas avec le curseur en bas
+                        de page. |zb|
+  '<c-o>'             Reviens à la dernière position du curseurs. (cela peut
+                        être un autre fichier) |ctrl-o|
+  '<c-i>'             Inverse de <c-o> |ctrl-i|
+  '<c-w>h'            Déplacement vers la fenêtre de gauche. |ctrl-w_h|
+  '<c-w>j'            Déplacement vers la fenêtre du bas.    |ctrl-w_j|
+  '<c-w>k'            Déplacement vers la fenêtre du haut.   |ctrl-w_k|
+  '<c-w>l'            Déplacement vers la fenêtre de droite. |ctrl-w_l|
+  ':{number}'         Déplacement à la ligne {number}.
+  'gj'                Déplacement à la ligne du dessous si la ligne est wrap.
+                        |gj|
+  'gk'                Déplacement à la ligne du dessus si la ligne est wrap.
+                        |gk|
+  'gt'                Passer à l'onglet suivant. |gt|
+  'gT'                Passer à l'onglet précèdent. |gT|
+
+  Remarque:~
+    Pour plus de détails sur les mouvements -> |cursor-motions|
+-------------------------------------------------------------------------------
+                                                           *tuto-insert-change*
+Insertion:~
+  'i'                 Passage en mode insertion "basic". |i|
+  'I'                 Passage en mode insertion en début de ligne. |I|
+  'a'                 Passage en mode insertion "append". |a|
+  'A'                 Passage en mode insertion à la fin de la ligne. |A|
+  'o'                 Passage en mode insertion en dessous de la ligne. |o|
+  'O'                 Passage en mode insertion au dessus de la ligne. |O|
+  'c{motion}'         Supprime le caractère sur lequel on est puis insert. |c|
+  'C'                 Supprime la ligne a partir de l'endroit où on est puis
+                        insert. |C|
+  '<c-k>{char}{char}' Insertion d'un digraph |digraph| ou caractère spécial.
+  ':dig[raph]'        Liste les digraphs.
+
+Modification:~
+  'r'                 Remplace le caractère sous le curseur. |r|
+  'R'                 Remplace les caractères jusqu'à la sortie du mode
+                      insert. |R|
+  '='                 Indentation de la ligne ou la partie sélectionnée. |=|
+  '!'                 Fait appel a une fonction shell. |!|
+  ':r[ead]'           Permet d'afficher dans le buffer actuel le fichier.
+                        [name], celui-ci peut ausi être le résultat d'une
+                        commande. |:r| |:re| |:read|
+  'gU{motion}'        Changement des caractere en majuscule. |gU|
+  'gu{motion}'        Changement des caractere en minuscule. |gu|
+  '~{motion}'         Inversion de la case. |~|
+  'g~{motion}'        Inversion de la case. |g~|
+  '<c-a>'             Incrémente le prochain chiffre de 1. |ctrl-a|
+  '<c-x>'             Décrémente le prochain chiffre de 1. |ctrl-x|
+
+    Exemple:~
+>
+      :r!ls -l => affiche une liste de fichier dans le buffer courant
+<
+    Remarque:~
+      Pour plus de détails sur le mode d'insertion. -> |Insert|
+      Pour plus de détails sur les commandes d'insertion. -> |inserting|
+      Pour plus de détails sur les commandes de modification. -> |change|
+-------------------------------------------------------------------------------
+                                                               *tuto-undo-redo*
+Undo/Redo:~
+  'u'                 Undo. |u|
+  '<c-r>'             Redo. |ctrl-r|
+  ':ea{number}'       Revenir en arrière {number} fois.|ea|
+  ':ea{number}s'      Revenir en arrière de {number}secondes.|ea|
+  ':ea{number}m'      Revenir en arrière de {number}minutes.|ea|
+  ':ea{number}h'      Revenir en arrière de {number}heures.|ea|
+  ':ea{number}'       Revenir en avant {number} fois.|la|
+  ':la{number}s'      Revenir en avant de {number}secondes.|la|
+  ':la{number}m'      Revenir en avant de {number}minutes.|la|
+  ':la{number}h'      Revenir en avant de {number}heures.|la|
+
+  Remarque:~
+    Pour plus de détails sur undo/redo. -> |undo-redo|
+-------------------------------------------------------------------------------
+                                                                *tuto-del-subs*
+Suppression:~
+  'd{motion}'         Supprime les choses sélectionnées via {motion}.
+  'x'                 Supprime le caractère sous le curseur. |x|
+  'X'                 Supprime du caractère sous le curseur jusqu'à la fin de
+                        la ligne. |X|
+  'dd'                Supprime la ligne.
+
+Substitution:~
+  :%s/{r1}/{r2}/g'    Substitution dans tout le fichier de {r1} par {r2}.
+  ':<,'>s/{r1}/{r2}/g Substitution dans la partie sélectionnée de {r1} par
+                        {r2}.
+  Tips:~
+    le raccourci <s-s> permet de pré écrire la formule de substituions décrite
+    ci-dessus. |tuto-add|
+
+  Remarque:~
+    Pour plus de détails sur la suppression. -> |deleting|
+-------------------------------------------------------------------------------
+                                                              *tuto-copy-paste*
+Copie/Colle/Déplace:~
+  'y{motion}'         Copie le caractère sous le curseur. |y|
+  'yy'                Copie la ligne. |yy|
+  '"{char}y[y]'       Copie les choses et les places dans le registre {char}.
+  Sélection + y       Copie le choses qui sont sélectionnées.
+  'p'                 Colle après. |p|
+  'P'                 Colle avant. |P|
+  '"{char}p'          Colle ce qui est dans le registre {char} après.
+  '"{char}P'          Colle ce qui est dans le registre {char} avant.
+  '"0P ou "0p'        Copie la dernière chose qui à été copiée.
+  '"1P ou "1p'        Copie la dernière chose qui à été supprimée.
+  ':registers'        Permet de voir la listes de choses enregistrer dans le
+                      clipboard. |:registers|
+
+  En mode insertion:~
+  '<c-r>{char}'      Colle en mode insertion.
+
+  Remarque:~
+    Pour plus de détails sur la copie. -> |copy-move|
+-------------------------------------------------------------------------------
+                                                                  *tuto-select*
+Selection:~
+  'v{motion}'         Sélection normal. |v|
+  'V{motion}'         Sélection de ligne. |V|
+  '<c-v>{motion}'     Sélection en mode colonne. |ctrl-v|
+  'gv'                Récupère la dernière sélection. |gv|
+
+  Tips:~
+         Après une sélection en mode colonne, il est possible d'insérer des
+         éléments sur toute la colonne sélectionnée avec la commande
+         d'insertion : |I|
+
+  Remarque:~
+    Pour plus de détails sur la sélection -> |Visual|
+-------------------------------------------------------------------------------
+                                                           *tuto-object-select*
+Selection d'objet:~
+
+  'aw'                "a word" Sélectionne un mot.
+  'iw'                "inner word" Sélectionne l'intérieur d'un mot.
+  'aW'                "a Word" Sélectionne un mot et son contour.
+  'iW'                "inner Word" Sélectionne l'intérieur d'un mot.
+  'as'                "a sentence" Sélectionne une phrase.
+  'is'                "inner sentence" Sélectionne l'intérieur d'une phrase.
+  'ap'                "a paragraphe" Sélection un paragraphe.
+  'ip'                "inner paragraphe" Sélection l'intérieur d'un paragraphe.
+  'a]' 'a['           "a [] block" Sélectionne le bock entre [].
+  'i]' 'i['           "inner [] block" Sélectionne l'intérieur d'un block [].
+  'a)' 'a(' 'ab'      "a block" Sélectionne le block entre ().
+  'i)' 'i(' 'ib'      "inner block" Sélectionne l'intérieur d'un block ().
+  'a>' 'a<'           "a <> block" Sélectionne le block entre <>.
+  'i>' 'i<'           "inner <> block" Sélectionne l'intérieur d'un block <>.
+  'at'                "a tag block" Sélectionne un block entre 2 balises xml.
+  'it'                "inner tag block" Sélectionne l'intérieur ____________.
+  'a}' 'a{' 'aB'      "a {} block" Sélectionne le block entre {}.
+  'i}' 'i{' 'iB'      "inner {} block" Sélectionne l'intérieur d'un block {}.
+  'a"' 'a'' 'a`'      "a quoted string" Sélectionne un string "string"
+  'i"' 'i''           "inner quoted string" Sélectionne l'intérieur d'un 
+                        string.
+  Remarque:~
+    Pour plus de détails sur la sélection d'objets -> |object-select|
+-------------------------------------------------------------------------------
+                                                                *tuto-operator*
+Operateur:~
+  'c'                 Change |c|
+  'd'                 Supprime |d|
+  'y'                 Copie |y|
+  '~'                 Swap case |~|
+  'g~'                Swap case |g~|
+  'gu'                Transforme en minuscule |gu|
+  'gU'                Transforme en majuscule |gU|
+  '='                 Indentation |=|
+  'gq'                Formatage du texte |gq|
+  'g?'                Encode ROT13 |g?|
+  '>'                 Déclame vers la droite du texte |>|
+  '<'                 Déclame vers la gauche du texte |<|
+  'zf'                Créer un folder |zf|
+  'v'                 Sélection |v|
+  'V'                 Sélection d'une ligne |V|
+  '<c-v>{motion}'     Sélection en mode colonne. |ctrl-v|
+
+  Cette liste d'opérateur peut être associée avec toutes les commande {motion}
+  , définit dans |tuto-motion| et |tuto-object-select|
+
+    Exemple:~
+>
+        "Ma phrase est belle."
+            ^
+        > vw
+        "Ma phrase est belle."
+            \______/
+        > w
+        "Ma phrase est belle."
+            \__________/
+<
+  ou
+>
+        "Ma phrase est belle."
+            ^
+        > diw
+        "Ma  est belle."
+            ^
+        > di"
+        ""
+         ^
+<
+
+  Remarque:~
+    Pour plus de détails sur la sélection -> |Operator|
+-------------------------------------------------------------------------------
+                                                                  *tuto-search*
+Recherche:~
+  '*'                 Active la recherche du mot sous le curseur. |star|
+  '#'                 Active la recherche du mot sous le curseur. |#|
+  '/'                 Active la recherche prioritaire vers le bas du buffer.
+                        |/|
+  'q/'                Historique de ces recherches. |q/|
+  '?'                 Active la recherche prioritaire vers le haut du buffer.
+                        |?|
+  'q?'                Historique de ces recherches. |q?|
+  'n'                 Se déplace dans buffer entre les occurrences de la
+                        recherche trouvées dans un sens. |n|
+  'N'                 Se déplace dans buffer entre les occurrences de la
+                        recherche trouvées dans l'autre sens. |N|
+
+  ':vimgrep {pattern} {path}'
+                      Recherche {pattern} dans tous les fichiers de {path}.
+  Exemple:~
+>
+    vimgrep /ma_var/gj **/*.[ch] => recherche ma_var dans tous les fichiers du
+                                    workspace se terminant par l'extension
+                                    .c ou .h
+<
+  Tips:~
+    le raccourci 'sg' permet de pré écrire la formule de de recherche vimgrep
+    décrite ci-dessus. |tuto-add|
+
+  Remarque:~
+    L'option \v après la recherche, permet d'utiliser des expressions
+    régulières "simplifiées".
+
+  Remarque:~
+    Pour plus de détails sur la sélection. -> |pattern-searches|
+-------------------------------------------------------------------------------
+                                                                   *tuto-split*
+Split:~
+  ':vnew'             Crée un nouveau buffer splité en vertical. |:vnew|
+  ':new'              Crée un nouveau buffer splité en horizontal. |:new|
+  '<c-w>v'            Split vertical. |ctrl-w_w|
+  '<c-w>s'            Split horizontal. |ctrl-w_s|
+  '<c-w>|'            Repousse les fenêtres splité verticalement sur les
+                        cotés. |ctrl-w_||
+  '<c-w>_'            Repousse les fenêtres splité horizontalement vers le
+                        haut ou le bas. |ctrl-w__|
+  '<c-w>='            Réarrange la tailles de fenêtre pour qu'elles soient
+                        toutes de la même tailles. |ctrl-w_=|
+  '<c-w><'            Agrandie de la fenêtre vers la gauche. |ctrl-w_<|
+  '<c-w>>'            Agrandie de la fenêtre vers la droite. |ctrl-w_>|
+  '<c-w>K'            Déplace la fenêtre vers l[ea]      Haut |ctrl-w_K|
+  '<c-w>H'            _____________________________ Gauche |ctrl-w_H|
+  '<c-w>L'            _____________________________        Droite |ctrl-w_L|
+  '<c-w>J'            _____________________________      Bas |ctrl-w_J|
+  '<c-w>T'            Déplace la fenêtre vers un nouvel onglet. |ctrl-w_T|
+  '<c-w>o'            Ne laisse affiché à l'écran que le split actuel.
+                        |ctrl-w_o|
+  '<c-w>c'            Ferme la fenêtre splitée. |ctrl-w_c|
+  '<c-w>x'            Intervertit 2 fenêtres splitées. |ctrl-w_x|
+
+  Remarque:~
+    Pour plus de détails sur les split et fenêtre. -> |window-move-cursor|
+-------------------------------------------------------------------------------
+                                                                *tuto-repeat*
+Repetition:~
+  '.'                 Répète la dernière action. |.|
+  '@:'                Répète la dernière commande. |@:|
+  'q{char}'           Début de l'enregistrement de la macro puis 'q' pour
+                        arrêter l'enregistrement dans la macro. |q|
+  '@{char}'           Exécution de la macro enregistrer dans le {char}
+  '@@'                Ré exécute la dernière macro. |@@|
+
+  ':g/{regex}/[cmd]'  Exécute la commande dans l'ensemble du fichier mais
+                        n'affecte que la ligne qui 'match' le pattern définit
+                        dans la regex. |global|
+  ':v/{regex}/[cmd]'  Exécute la commande dans l'ensemble du fichier mais
+                        n'affecte pas la ligne qui 'match' le pattern définit
+                        dans la regex. |vglobal|
+  Exemple :~
+>
+    :g/^M/d => supprime toutes les lignes qui commence par un M.
+<
+  Remarque:~
+    Pour plus de détails sur les répétitions-> |repeating|
+-------------------------------------------------------------------------------
+                                                                *tuto-cmd-line*
+Ligne de commande:~
+  ':'                 Permet d'activer les lignes de commandes. |:|
+  'q:'                Afficher l'historique des dernières commandes
+                        effectuées. |q:|
+  En mode ligne de commande :~
+  '<c-f>'             Permet de faire un affichage de l'historique des
+                        dernières commandes effectuées et éditer la ligne de
+                        commande actuelle.
+  '<c-c>'             Permet de fermer la ligne de commande. |ctrl-c|
+
+  Remarque:~
+    Pour plus de détails sur les command line. -> |command-line|
+-------------------------------------------------------------------------------
+                                                                  *tuto-folder*
+Folder~
+  'zo'                Ouvrir un folder. |zo|
+  'zc'                Fermer un folder. |zc|
+  'zO'                Ouvrir un folder ainsi que tous les folders imbriqués.
+                        |zO|
+  'zC'                Fermer un folder ainsi que tous les folders imbriqués.
+                        |zC|
+  'zR'                Ouvir tous les folders du fichier. |zR|
+  'zM'                Fermer tous les folders du fichier. |zM|
+
+  Remarque:~
+    Pour plus de détails sur les folders -> |fold-commands|
+------------------------------------------------------------------------------
+                                                                *tuto-vimdiff*
+VimDiff:~
+  'diffthis'          Réalise un vimdiff. (à faire sur chacun des buffers à
+                        l'écran) |diffthis|
+  'dp'                Déplace la modification sur le curseur vers l'autre
+                        buffer. |dp|
+  'do'                Récupère la modification de l'autre buffer. |dp|
+  ']c'                Descend jusqu'à la prochaine modification.  |]c|
+  '[c'                Remonte jusqu'à la précédente modification. |[c|
+
+  Remarque:~
+    Pour plus de détails sur les diff -> |vimdiff|
+-------------------------------------------------------------------------------
+                                                                *tuto-complete*
+Completion:~
+  '<c-n>'             Complétion du mot par rapport à l'ensemble des mots
+                        disponible dans le buffer actuel.
+                        |i_CTRL-X_CTRL-N|
+  '<c-p>'             Complétion du mot par rapport à l'ensemble des mots.
+                        disponible dans le buffer actuel.
+                        |i_CTRL-X_CTRL-P|
+  '<c-x>f'            Completion du path en cours d'insertion.
+                        |i_CTRL-X_CTRL-F|
+
+  Remarque:~
+    Pour plus de détails sur la complétion -> |ins-completion|
+------------------------------------------------------------------------------
+                                                                   *tuto-tags*
+Tags:~
+  '<c-]>'               Saute a la description du mot sous le curseur. |CTRL-]|
+  'g]'                  Equivalent à la commande '<c-]>'. |g]|
+
+  Tips:~
+    Generation de tags pour les fichiers c:
+>
+      !ctags -R --exclude=*.js --c-kinds=+p --fields=+iaS --extra=+q .
+<
+    Le raccourci est <F5>. |tuto-add|
+
+  Remarque:~
+    Pour plus de détails sur les tags -> |tags-and-searches|
+------------------------------------------------------------------------------
+                                                                *tuto-quickfix*
+Quickfix:~
+
+  Le buffer quickfix contient les résultats de recherches (via grep ou
+  vimgrep), ainsi que les résultats d'un makefile. (erreur/warning lors de la
+  compilation).
+
+  ':copen'            Ouverture du buffer quickfix. |:copen|
+  ':ccl[ose]'         Fermeture du buffer quickfix. |:cclose|
+  'make'              Lance la commande gnu make et récupère les erreurs et
+                        warnings dans le buffer quickfix.
+
+  Remarque:~
+    Pour plus de détails sur le buffer quickfix -> |quickfix|
+-------------------------------------------------------------------------------
+                                                                *tuto-complexe*
+Fonctions Complexe:~
+  ':r!svn st [path]'  Affiche les fichiers modifiés par rapport à la base.
+                      |tuto-svn-modif|
+-------------------------------------------------------------------------------
+                                                                   *tuto-spell*
+Orthographe:~
+  ':set spell'        Active la correction orthographique. |spell|
+  'z='                Affiche la liste des corrections possibles.
+
+  Tips:~
+    le raccourci '<F8>' permet de pré écrire la formule de d'activation de la
+    correction orthographique.|tuto-add|
+
+  Remarque:~
+    Pour plus de détails sur la correction Orthographique -> |spell|
+-------------------------------------------------------------------------------
+                                                                     *tuto-add*
+Fonctions Ajoutés:~
+  '!v'                Diff avec svn du fichier courant. |tuto-svn-diff|
+  '!<s-v>'            Diff avec svn du fichier sous le curseur. |tuto-svn-diff|
+  '<F1>'              Affiche les numéros de ligne.
+  '<F2>'              Indentation de 2 caractères.
+  '<F3>'              Indentation de 3 caractères.
+  '<F4>'              Indentation de 4 caractères.
+  '<F5>'              Crée le fichier de tags.
+  '<F8>'              Active la correction orthographique.
+  'sf {fichier}'      Recherche les fichiers ou ouvre le fichier..
+  'sm {fichier}'      Recherche les fichiers parmi ceux ouvert récemment.
+  'sd {dossier}       Recherche de dossier.
+  'st {tag}           Recherche de tag.
+  's<space>'          Recherche d'espace en trop.
+  '<s-s>'             Substitution dans tout le fichier.
+  'visual <s-s>'      Substitution dans la selection.
+  '<space>'           Affiche ou la non les resultats de recherches.
+  '<leader>t          Affiche la tagbar.
+  'sg'                Recherche dans tous les fichiers.
+
+    Exemple d'utilisation de la recherche de ma_variable dans tous les fichiers
+    qui se finissent par l'extension c ou h :
+>
+    'sg' => :vimgrep /ma_variable/gj  **/*.[ch]
+<
+
+Fonctionnalité ne fonctionnant qu'avec une version de vim >7.3:~
+   '<F10>'             Active une colonne à 80 caractères.
+   '<F11>'             Active une marge à 120 caractères.
+-------------------------------------------------------------------------------
+                                                                   *tuto-other*
+Autres fonctionnalités:~
+  ':color {colorname}' Selectionne une couleur parmis celle disponible.
+                                                          *tuto-assoc-act-depl*
+===============================================================================
+DESCRIPTION DE COMMANDES                                             *tuto-cmd*
+-------------------------------------------------------------------------------
+                                                               *tuto-svn-modif*
+Lister les modifications entre les sources en local et le dépôt SVN:~
+- Si le chemin courant contient un dossier ".svn": >
+  :r! svn st .
+- Si le chemin courant ne contient pas de dossier ".svn": >
+  :r! svn st <path>
+
+Description de la commande ci-dessus:~
+
+:r[ead] [name]
+                      Permet d'afficher dans le buffer actuel le fichier
+                      [name], celui-ci peut ausi être le resultat d'une
+                      commande |:r| |:re| |:read|
+
+
+:!
+                      Permet d'exécuter une commande du shell |:!cmd| |:!|
+-------------------------------------------------------------------------------
+                                                                *tuto-svn-diff*
+Réaliser un diff avec la base SVN d'un fichier~
+- Si on veut réaliser le diff avec le fichier courant:
+  '!v'
+- Si on veut réaliser un diff avec le fichier sous le curseur:
+  '!<s-v>'
+  Remarque:~
+    Ce mapping a été ajouté pour faciliter le diff
+===============================================================================
+TODO                                                                *tuto-todo*
+  jgu: Typo.
+  jgu: Ajouter les [count] sur les commandes qui peuvent utiliser cette
+         fonctionnalitée.
+===============================================================================
+vim:ft=help:et:ts=2:sw=2:sts=2:norl
