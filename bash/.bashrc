@@ -19,6 +19,8 @@ alias la='ll -a'
 alias tmux='tmux -2'
 alias shutdown='sudo shutdown -h now'
 alias reboot='sudo reboot'
+alias ope='setxkbmap fr'
+alias jgu='setxkbmap -layout us -variant intl'
 
 # Prompt
 fg=('\[\e[0;30m\]' '\[\e[0;31m\]' '\[\e[0;32m\]' '\[\e[0;33m\]'
@@ -37,4 +39,14 @@ then
   export STUDIO_JDK=/Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk
 fi
 
+# add bin (usr config)
 PATH=$PATH:$HOME/bin
+
+# us international
+setxkbmap -layout us -variant intl
+
+# please don't make cltr-s kill my terminal
+stty -ixon
+
+# color
+eval $(dircolors -b $HOME/.dircolors)

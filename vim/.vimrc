@@ -41,7 +41,12 @@ Plugin 'tomasr/molokai'
 Plugin 'w0ng/vim-hybrid'
 Plugin 'jonathanfilip/vim-lucius'
 Plugin 'nanotech/jellybeans.vim'
+Plugin 'KeitaNakamura/neodark.vim'
+Plugin 'tyrannicaltoucan/vim-quantum'
 Plugin 'cocopon/iceberg.vim'
+Plugin 'joshdick/onedark.vim'
+Plugin 'sjl/badwolf'
+Plugin 'jpo/vim-railscasts-theme'
 call vundle#end()
 
 " GVIM
@@ -368,8 +373,8 @@ endif
 
 ""---------------------
 "" Hybrid OOOO
-set background=dark
-colorscheme hybrid
+"set background=dark
+"colorscheme hybrid
 
 ""---------------------
 "" molokai OOOO
@@ -382,6 +387,27 @@ colorscheme hybrid
 ""---------------------
 "" jellybeans OOOO
 "colorscheme jellybeans
+
+""---------------------
+" neodark OOOO
+set background=dark
+colorscheme neodark
+
+"---------------------
+" quantum OOOO
+"set background=dark
+"colorscheme quantum
+
+"---------------------
+" onedark OOOO
+" set background=dark
+" let g:onedark_termcolors=256
+" colorscheme onedark
+
+"---------------------
+" railscasts OOOO
+" set background=dark
+" colorscheme railscasts
 
 ""---------------------
 "" jellybeans OOOO
@@ -435,9 +461,10 @@ autocmd FileType eruby setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType eco setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType xml setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType python setlocal ts=4 sts=4 sw=4 expandtab
-" Merci olivier pour ces indentations :D
-autocmd FileType c setlocal ts=3 sts=3 sw=3 expandtab
+autocmd FileType c setlocal ts=4 sts=4 sw=4 expandtab
 autocmd FileType c set omnifunc=ccomplete#Complete
+autocmd FileType cpp setlocal ts=4 sts=4 sw=4 expandtab
+autocmd FileType cpp set omnifunc=ccomplete#Complete
 autocmd FileType vim setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType bash,sh setlocal shiftwidth=2 tabstop=2 expandtab
 
@@ -502,6 +529,10 @@ nnoremap ? ?\v
 vnoremap ? ?\v
 " toggle sur l'affichage des numeros de ligne
 nnoremap <f1> :set number! number?<cr>
+" insertion de caractère tabulation
+inoremap <s-tab> <c-v><tab>
+" activation ou non des tabulation
+nmap <f7> :set noet!<Bar>:set noet?<CR>
 
 " supprime le raccourcis sort (s) dans netrw pour pouvoir utiliser ctrl-p à la
 " place
@@ -604,9 +635,15 @@ nnoremap [Search]q :<C-u>CtrlPQuickfix<CR>
 nnoremap [Search]s :<C-u>CtrlPMixed<CR>
 nnoremap [Search]t :<C-u>CtrlPTag<CR>
 " grep
-nnoremap [Search]g :<C-u>vimgrep //gj **/*.<left><left><left>
+nnoremap [Search]g :<C-u>silent vimgrep //gj **/*.<left><left><left>
 \<left><left><left><left><left><left>
-nnoremap [Search]G :<C-u>vimgrep /<c-r><c-w>/gj **/*.
+nnoremap [Search]G :<C-u>silent vimgrep /<c-r><c-w>/gj **/*.
+" grep c/cpp file
+nnoremap [Search]c :<C-u>silent vimgrep //gj **/*.[ch] **/*.[ch]pp **/*.[ch]xx **/*.cc
+      \<left><left><left><left><left><left><left><left><left><left><left><left>
+      \<left><left><left><left><left><left><left><left><left><left><left><left>
+      \<left><left><left><left><left><left><left><left><left><left><left><left>
+      \<left><left><left><left><left><left><left><left><left>
 " search trailing space
 nnoremap [Search]<space> /\s\+$/<cr>
 
@@ -793,3 +830,15 @@ function! ToggleWindowSize(act)
 endfunction
 
 command! -nargs=1 Silent execute ':silent !'.<q-args> | execute ':redraw!'
+
+function! JGUSvnStatus(...)
+  tabe
+  set bt=nofile
+  if (a:0 >= 1)
+    execute "r ! LANG=C svnvdfst " . a:1
+  else
+    execute "r ! LANG=C svnvdfst"
+  endif
+ normal gg dd
+endfunction
+command! -nargs=? -complete=file SvnStatus silent call JGUSvnStatus(<f-args>)
