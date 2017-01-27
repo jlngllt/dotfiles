@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# chemin vers les fichiers muxa pour se connecter aux cartes
+PATH_XML_MUXA_FSP_ECU=/home/ft055062/prog/4g/hyper_all_cards/HYPER-FSP-ECU/muxa-FSP-ECU-V01R03.xml
+PATH_XML_MUXA_SSM_ECU=/home/ft055062/prog/4g/hyper_all_cards/HYPER-SSM-ECU/HYPER-SSM-ECU-V01R05/muxa-SSM-ECU-V01R05.xml
+PATH_XML_MUXA_MB_SPU=/home/ft055062/prog/4g/hyper_all_cards/HYPER-MB-SPU/muxa-SPU-V01R02.xml
+
+# nom des sessions
+S_DEV=DEV
+S_SSM_ECU=SSM-ECU
+S_FSP_ECU=FSP-ECU
+S_MB_SPU=MB-SPU
+
+tmux new-session -d -s $S_DEV
+
+tmux new-session -d -s $S_SSM_ECU "muxa -f $PATH_XML_MUXA_SSM_ECU; exec bash"
+tmux rename-window -t $S_SSM_ECU:1 'muxa'
+tmux new-window -t $S_SSM_ECU:2 -n 'hyper-1715' "rlwrap telnet localhost 1715; exec bash"
+tmux new-window -t $S_SSM_ECU:3 -n 'posix-1704' "rlwrap telnet localhost 1704; exec bash"
+tmux new-window -t $S_SSM_ECU:4 -n 'linux-1709' "rlwrap telnet localhost 1709; exec bash"
+tmux split-window -h 'exec bash'
+tmux select-pane -t $S_SSM_ECU:4 -lL
+
+tmux new-session -d -s $S_FSP_ECU "muxa -f $PATH_XML_MUXA_FSP_ECU; exec bash"
+tmux rename-window -t $S_FSP_ECU:1 'muxa'
+tmux new-window -t $S_FSP_ECU:2 -n 'hyper-1815' "rlwrap telnet localhost 1815; exec bash"
+tmux new-window -t $S_FSP_ECU:3 -n 'posix-1804' "rlwrap telnet localhost 1804; exec bash"
+tmux new-window -t $S_FSP_ECU:4 -n 'linux-1809' "rlwrap telnet localhost 1809; exec bash"
+tmux split-window -h 'exec bash'
+tmux select-pane -t $S_FSP_ECU:4 -lL
+
+tmux new-session -d -s $S_MB_SPU "muxa -f $PATH_XML_MUXA_MB_SPU; exec bash"
+tmux rename-window -t $S_MB_SPU:1 'muxa'
+tmux new-window -t $S_MB_SPU:2 -n 'hyper-1615' "rlwrap telnet localhost 1615; exec bash"
+tmux new-window -t $S_MB_SPU:3 -n 'posix-1604' "rlwrap telnet localhost 1604; exec bash"
+tmux new-window -t $S_MB_SPU:4 -n 'linux-1609' "rlwrap telnet localhost 1609; exec bash"
+tmux split-window -h 'exec bash'
+tmux select-pane -t $S_MB_SPU:4 -lL
+
+tmux -2 a -t $S_DEV

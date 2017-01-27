@@ -1,0 +1,26 @@
+#!/bin/bash
+
+svnvdfst()
+{
+  if ! [ -d "VDF" ]
+  then
+    echo "Wrong path to use script, uses it where there is VDF directory"
+    exit -1
+  fi
+
+  if [ -z "$1" ]
+  then
+    vdf_to_parse="BRICKS/BASE/xml/current_vdf.xml"
+  else
+    vdf_to_parse=$1
+  fi
+
+  echo "VDF : " $vdf_to_parse
+  for csc in $(VDF/vdfParser.py -v $vdf_to_parse -l)
+  do
+    echo ">> $csc"
+    svn st $(VDF/vdfParser.py -v $vdf_to_parse -c $csc -p buildpath)/$csc
+  done
+}
+
+svnvdfst $1

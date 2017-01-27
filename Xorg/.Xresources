@@ -5,6 +5,7 @@ URxvt.font: xft:DejaVu Sans Mono:pixelsize=10
 !XTerm*faceName: Hack
 !XTerm*faceName: mononoki
 XTerm*faceName: DejaVu Sans Mono
+!XTerm*faceName: Liberation Mono
 
 Xterm*letterSpace: 0
 Xterm*lineSpace: 0
