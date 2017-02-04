@@ -72,6 +72,10 @@ endif
 
 " BASIC
 " ----------------------------------------------------------------------------
+" Detection de l'OS
+if has("unix")
+  let uname = substitute(system("uname -s"), "\n", "", "")
+endif
 " détection du type de fichier
 filetype plugin on
 " activation d'une indentation
@@ -499,8 +503,13 @@ nmap <F3> :set expandtab   tabstop=3 shiftwidth=3  softtabstop=3<CR>
 set timeoutlen=650
 " activation de la correction orthographique
 nmap <F5> :!ctags -n -o tags.prj -R --exclude=*.js --exclude=*.html --exclude=*.vim --c-kinds=+p --fields=+iaS --extra=+q .
-if has('unix') || has('mac')
+" Ctags pour les libs C en fonction de l'OS
+if uname == "linux"
   nmap <F6> :!ctags -n -o ~/.tags.clib -R --c-kinds=+p --fields=+iaS --extra=+q /usr/include
+elseif uname == "Darwin"
+  nmap <F6> :!ctags -n -o ~/.tags.clib -R --c-kinds=+p --fields=+iaS --extra=+q /usr/local/include
+else
+  :echom "Clib tag not supported (yet?) in this OS."
 endif
 " activation de la correction orthographique
 nmap <F8> :set spell!<bar>set spell?<CR>
