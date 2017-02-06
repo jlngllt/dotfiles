@@ -30,6 +30,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'vim-scripts/vcscommand.vim'
+Plugin 'vim-scripts/AnsiEsc.vim'
 if v:version > 702
   Plugin 'Shougo/unite.vim'
   Plugin 'Shougo/vimfiler.vim'
@@ -92,8 +93,8 @@ set laststatus=2
 set ch=2
 " style de la barre de status
 set stl=%f\ %m\ %r\ Line:\ %l/%L[%p%%]\ Col:\ %c\ Buf:\ #%n\ [%b][0x%B]
-" ne coupe pas le texte lorsqu'il est trop long
-set nowrap
+"coupe le texte lorsqu'il est trop long
+set wrap
 " passe à la ligne suivante lors de déplacement en debut ou fin de ligne
 " char   key
 " b      <BS>
@@ -158,8 +159,6 @@ set hlsearch
 " lors d'un appuie sur <tab> insertion d'une tabulation de la taille de
 " shiftwidth et softtabstop
 set smarttab
-" utilise des espaces en lieu et place de tabulation
-set expandtab
 " au moins 3 lignes visible autour du curseur
 set scrolloff=3
 "  suppression de la fenêtre de pré visualisation de complétion (scratch
@@ -286,6 +285,8 @@ set keywordprg=:help
 set cinoptions={0,>1s,e0,^0,n0,:1s,p2s,i1s,(0,u0,W2s
 " backspace disponible en mode insertion
 set backspace=indent,eol,start
+" pas de vrai tabulation (\t) par default (<F7> pour activer)
+set expandtab
 " permet d'utiliser les alias configurer dans le shell
 "set shell=/bin/bash\ -i
 
@@ -452,25 +453,25 @@ autocmd BufNewFile,BufRead Gemfile, [rR]akefile, Vagrantfile, Thorfile, config.r
 autocmd BufNewFile,BufRead *.md setf markdown
 autocmd BufNewFile,BufRead *.txt setf txt
 autocmd FileType txt setlocal textwidth=78 wrapmargin=2 tabstop=8 shiftwidth=8
-autocmd FileType markdown setlocal wrap expandtab
-autocmd FileType ruby setlocal shiftwidth=2 tabstop=2 expandtab
-autocmd FileType lua setlocal shiftwidth=2 tabstop=2 expandtab
-autocmd FileType javascript setlocal shiftwidth=2 tabstop=2 expandtab
-autocmd FileType coffee setlocal shiftwidth=2 tabstop=2 expandtab
-autocmd FileType handlebars setlocal shiftwidth=2 tabstop=2 expandtab
-autocmd FileType scss setlocal shiftwidth=2 tabstop=2 expandtab
-autocmd FileType css setlocal shiftwidth=2 tabstop=2 expandtab
-autocmd FileType html setlocal shiftwidth=2 tabstop=2 expandtab
-autocmd FileType eruby setlocal shiftwidth=2 tabstop=2 expandtab
-autocmd FileType eco setlocal shiftwidth=2 tabstop=2 expandtab
-autocmd FileType xml setlocal shiftwidth=2 tabstop=2 expandtab
-autocmd FileType python setlocal ts=4 sts=4 sw=4 expandtab
-autocmd FileType c setlocal ts=4 sts=4 sw=4 expandtab
+autocmd FileType markdown setlocal textwidth=78
+autocmd FileType ruby setlocal shiftwidth=2 tabstop=2
+autocmd FileType lua setlocal shiftwidth=2 tabstop=2
+autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
+autocmd FileType coffee setlocal shiftwidth=2 tabstop=
+autocmd FileType handlebars setlocal shiftwidth=2 tabstop=2
+autocmd FileType scss setlocal shiftwidth=2 tabstop=
+autocmd FileType css setlocal shiftwidth=2 tabstop=2
+autocmd FileType html setlocal shiftwidth=2 tabstop=2
+autocmd FileType eruby setlocal shiftwidth=2 tabstop=2
+autocmd FileType eco setlocal shiftwidth=2 tabstop=2
+autocmd FileType xml setlocal shiftwidth=2 tabstop=2
+autocmd FileType python setlocal ts=4 sts=4 sw=4
+autocmd FileType c setlocal ts=4 sts=4 sw=4
 autocmd FileType c set omnifunc=ccomplete#Complete
-autocmd FileType cpp setlocal ts=4 sts=4 sw=4 expandtab
+autocmd FileType cpp setlocal ts=4 sts=4 sw=4
 autocmd FileType cpp set omnifunc=ccomplete#Complete
-autocmd FileType vim setlocal shiftwidth=2 tabstop=2 expandtab
-autocmd FileType bash,sh setlocal shiftwidth=2 tabstop=2 expandtab
+autocmd FileType vim setlocal shiftwidth=2 tabstop=2
+autocmd FileType bash,sh setlocal shiftwidth=2 tabstop=2
 
 autocmd FileType qf nnoremap <buffer> p <CR>:call <SID>preview()<CR>
 if exists('+colorcolumn')
@@ -496,9 +497,9 @@ nmap <leader>t :Tagbar<cr>
 " annulation du sur lignage après une recherche
 nmap <space> :set hls!<Bar>:set hls?<CR>
 " activation de diffèrent type d'indentation
-nmap <F4> :set expandtab   tabstop=4 shiftwidth=4  softtabstop=4<CR>
-nmap <F2> :set expandtab   tabstop=2 shiftwidth=2  softtabstop=2<CR>
-nmap <F3> :set expandtab   tabstop=3 shiftwidth=3  softtabstop=3<CR>
+nmap <F4> :set tabstop=4 shiftwidth=4 softtabstop=4<CR>
+nmap <F2> :set tabstop=2 shiftwidth=2 softtabstop=2<CR>
+nmap <F3> :set tabstop=3 shiftwidth=3 softtabstop=3<CR>
 " réduction du timeout
 set timeoutlen=650
 " activation de la correction orthographique
