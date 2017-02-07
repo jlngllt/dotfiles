@@ -138,7 +138,7 @@ set path+=**
 " affiche les espaces, tabulation, fin de ligne et caractère inconnu (qui
 " peuvent générer des erreurs lors des compilations/exécution)
 set list
-set listchars=trail:·,tab:>-,eol:¬,nbsp:×
+set listchars=trail:·,tab:>-,eol:¬,nbsp:×,precedes:<,extends:>
 " ignore la case lors de recherche
 set ignorecase
 " si ignorecase et smartcase sont à ON, la case est active si le pattern
