@@ -37,12 +37,12 @@ if [ $distro = 'Darwin' ]
 then
   # Patch pour ouvrir android studio dans mac
   export STUDIO_JDK=/Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk
-elif [ $distro = 'linux' ]
+elif [ $distro = 'Linux' ]
 then
   # us international
   setxkbmap -layout us -variant intl
   #color
-  eval $(dircolors -b $HOME/.dircolos)
+  eval $(dircolors -b $HOME/.dircolors)
 fi
 
 # add bin (usr config)
@@ -50,4 +50,3 @@ PATH=$PATH:$HOME/bin
 
 # please don't make cltr-s kill my terminal
 stty -ixon
-
