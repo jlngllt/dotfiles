@@ -30,7 +30,9 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'vim-scripts/vcscommand.vim'
+Plugin 'tpope/vim-dispatch'
 Plugin 'vim-scripts/AnsiEsc.vim'
+Plugin 'vim-scripts/highlight.vim'
 if v:version > 702
   Plugin 'Shougo/unite.vim'
   Plugin 'Shougo/vimfiler.vim'
@@ -75,7 +77,7 @@ endif
 " ----------------------------------------------------------------------------
 " Detection de l'OS
 if has("unix")
-  let uname = substitute(system("uname -s"), "\n", "", "")
+  let g:uname = substitute(system("uname -s"), "\n", "", "")
 endif
 " détection du type de fichier
 filetype plugin on
@@ -496,22 +498,15 @@ nmap <leader>t :Tagbar<cr>
 " ----------------------------------------------------------------------------
 " annulation du sur lignage après une recherche
 nmap <space> :set hls!<Bar>:set hls?<CR>
+" compilation du projet
+nmap <F5> :Make FSP_SPU_LOG_pikeos; cp -vf MODS/FSP_SPU_LOG/bin/FSP_SPU_LOG.hbi /tftpboot/posix.hbi
+nmap <F6> :Make clean_mdc_FSP_SPU_LOG_pikeos mdc_FSP_SPU_LOG_pikeos FSP_SPU_LOG_pikeos; cp -vf MODS/FSP_SPU_LOG/bin/FSP_SPU_LOG.hbi /tftpboot/posix.hbi
 " activation de diffèrent type d'indentation
 nmap <F4> :set tabstop=4 shiftwidth=4 softtabstop=4<CR>
 nmap <F2> :set tabstop=2 shiftwidth=2 softtabstop=2<CR>
 nmap <F3> :set tabstop=3 shiftwidth=3 softtabstop=3<CR>
 " réduction du timeout
 set timeoutlen=650
-" activation de la correction orthographique
-nmap <F5> :!ctags -n -o tags.prj -R --exclude=*.js --exclude=*.html --exclude=*.vim --c-kinds=+p --fields=+iaS --extra=+q .
-" Ctags pour les libs C en fonction de l'OS
-if uname == "linux"
-  nmap <F6> :!ctags -n -o ~/.tags.clib -R --c-kinds=+p --fields=+iaS --extra=+q /usr/include
-elseif uname == "Darwin"
-  nmap <F6> :!ctags -n -o ~/.tags.clib -R --c-kinds=+p --fields=+iaS --extra=+q /usr/local/include
-else
-  :echom "Clib tag not supported (yet?) in this OS."
-endif
 " activation de la correction orthographique
 nmap <F8> :set spell!<bar>set spell?<CR>
 " raccourcis pour faciliter la substitution de texte
@@ -852,3 +847,23 @@ function! JGUSvnStatus(...)
  normal gg dd
 endfunction
 command! -nargs=? -complete=file SvnStatus silent call JGUSvnStatus(<f-args>)
+
+function! JGUCtags(...)
+  if a:0 >= 1
+    let type = a:1
+    if type == "lib"
+      if g:uname == "linux"
+        execute ":!ctags -n -o ~/.tags.clib -R --c-kinds=+p --fields=+iaS --extra=+q /usr/include"
+      elseif g:uname == "Darwin"
+        execute ":!ctags -n -o ~/.tags.clib -R --c-kinds=+p --fields=+iaS --extra=+q /usr/local/include"
+      else
+        execute ":echom \"Clib tag not supported (yet?) in this OS.\""
+      endif
+    else
+      execute ":echom \"Usage: :Ctags lib<cr> or :Ctags<cr>\""
+    endif
+  else
+    execute ":!ctags -n -o tags.prj -R --exclude=*.js --exclude=*.html --exclude=*.vim --c-kinds=+p --fields=+iaS --extra=+q ."
+  endif
+endfunction
+command! -nargs=? Ctags call JGUCtags(<f-args>)

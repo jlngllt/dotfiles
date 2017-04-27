@@ -1,15 +1,17 @@
 !URxvt.font: xft:Hack:pixelsize=10
 !URxvt.font: xft:mononoki:pixelsize=10
-URxvt.font: xft:DejaVu Sans Mono:pixelsize=10
+!URxvt.font: xft:DejaVu Sans Mono:pixelsize=10
 
 !XTerm*faceName: Hack
 !XTerm*faceName: mononoki
 XTerm*faceName: DejaVu Sans Mono
 !XTerm*faceName: Liberation Mono
+XTerm*faceSize: 9
+Xterm*antialias:true
+Xft.rgba: rgb
 
-Xterm*letterSpace: 0
-Xterm*lineSpace: 0
-XTerm*faceSize: 10
+!Xterm*letterSpace: 0
+!Xterm*lineSpace: 0
 XTerm*locale: true
 XTerm*geometry: 80x20
 XTerm*saveLines: 16384
