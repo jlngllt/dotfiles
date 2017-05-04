@@ -1,27 +1,32 @@
+!URxvt.font: xft:Dina:pixelsize=9
 !URxvt.font: xft:Hack:pixelsize=10
 !URxvt.font: xft:mononoki:pixelsize=10
 !URxvt.font: xft:DejaVu Sans Mono:pixelsize=10
 
+! --- font --
+XTerm*faceName: Dina
 !XTerm*faceName: Hack
 !XTerm*faceName: mononoki
-XTerm*faceName: DejaVu Sans Mono
+!XTerm*faceName: DejaVu Sans Mono
 !XTerm*faceName: Liberation Mono
+! --- size ---
 XTerm*faceSize: 9
-Xterm*antialias:true
-Xft.rgba: rgb
-
-!Xterm*letterSpace: 0
-!Xterm*lineSpace: 0
+! --- option ---
+!Xterm*antialias:true
+!XTerm*letterSpace: 0
+!XTerm*lineSpace: 0
 XTerm*locale: true
 XTerm*geometry: 80x20
 XTerm*saveLines: 16384
-XtTrm*loginShell: true
+XTerm*loginShell: true
 XTerm*charClass: 33:48,35:48,37:48,43:48,45-47:48,64:48,95:48,126:48
 XTerm*termName: xterm-color
 XTerm*metaSendsEscape: true
 XTerm*eightBitInput: false
 XTerm*backarrowKey: false
 XTerm*ttyModes: erase ^?
+! --- xft ---
+Xft.rgba: rgb
 
 !BLK Cursor
 #define _color0        #000d18
