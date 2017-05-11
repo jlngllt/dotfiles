@@ -291,6 +291,8 @@ set backspace=indent,eol,start
 set expandtab
 " permet d'utiliser les alias configurer dans le shell
 "set shell=/bin/bash\ -i
+" paramétrage de tabulation/indentation par default
+set tabstop=4 shiftwidth=4 softtabstop=4
 
 " COLOR
 " ----------------------------------------------------------------------------
@@ -424,8 +426,8 @@ colorscheme neodark
 " La coloration syntaxique pour les documents complexe est légèrement lente.
 " Ajout de cette configuration pour réduire le chargement)
 set synmaxcol=400
-syn sync minlines=200
-syn sync maxlines=500
+syn sync minlines=70
+syn sync maxlines=200
 
 " Si on peut on highlight on fait une bande a 80 lignes et on fait une grosse
 " bande large à 120
@@ -452,10 +454,10 @@ endif
 " ----------------------------------------------------------------------------
 autocmd BufNewFile,BufRead Gemfile, [rR]akefile, Vagrantfile, Thorfile, config.ru
       \ setf ruby
-autocmd BufNewFile,BufRead *.md setf markdown
-autocmd BufNewFile,BufRead *.txt setf txt
-autocmd FileType txt setlocal textwidth=78 wrapmargin=2 tabstop=8 shiftwidth=8
-autocmd FileType markdown setlocal textwidth=78
+autocmd BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
+autocmd BufNewFile,BufFilePre,BufRead *.txt set filetype=txt
+autocmd FileType txt setlocal wrapmargin=2 tabstop=2 shiftwidth=2 textwidth=78
+autocmd FileType markdown setlocal wrapmargin=2 tabstop=2 shiftwidth=2 textwidth=78
 autocmd FileType ruby setlocal shiftwidth=2 tabstop=2
 autocmd FileType lua setlocal shiftwidth=2 tabstop=2
 autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
