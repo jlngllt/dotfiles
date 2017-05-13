@@ -137,6 +137,10 @@ set spelllang=fr
 " ajout de path des includes pour pouvoir naviguer facilement avec les noms de
 " fichier avec des commandes tel que gf
 set path+=**
+if uname == "Darwin"
+  " chemin vers les includes de mac quand Xcode est installé
+  set path+=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-migrator/sdks/MacOSX.sdk/usr/include/
+endif
 " affiche les espaces, tabulation, fin de ligne et caractère inconnu (qui
 " peuvent générer des erreurs lors des compilations/exécution)
 set list
@@ -284,13 +288,19 @@ set timeout timeoutlen=3000 ttimeoutlen=100
 " programme utiliser lors la commande K
 set keywordprg=:help
 " aligne les arguments d'une fonction lorsque l'on saute une ligne
-set cinoptions={0,>1s,e0,^0,n0,:1s,p2s,i1s,(0,u0,W2s
+"set cinoptions={0,>1s,e0,^0,n0,:1s,p2s,i1s,(0,u0,W2s
+"set cinoptions={0,>1s,e0,^0,n0,:1s,p2s,i1s,(0,u0,W2s,Ls,l1,b1
+set cinoptions={0,}0,>1s,e0,^0,n0,:1s,p2s,i1s,(0,u0,W2s,Ls,l1,b1,t0,=0
 " backspace disponible en mode insertion
 set backspace=indent,eol,start
 " pas de vrai tabulation (\t) par default (<F7> pour activer)
 set expandtab
 " permet d'utiliser les alias configurer dans le shell
 "set shell=/bin/bash\ -i
+" clipboard + yand avec avec le register * ne fonctionne pas sans
+if $TMUX == ''
+  set clipboard+=unnamed
+endif
 
 " COLOR
 " ----------------------------------------------------------------------------
