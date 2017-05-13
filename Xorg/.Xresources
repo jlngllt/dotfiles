@@ -5,6 +5,10 @@
 
 ! --- font --
 XTerm*faceName: Dina
+!XTerm*faceName: ProggyClean:style=Normal
+!XTerm*faceName: ProggySquare:style=Regular
+!XTerm*faceName: GohuFont:style=Medium
+!XTerm*faceName: gohufont\-11b:style=Regular
 !XTerm*faceName: Hack
 !XTerm*faceName: mononoki
 !XTerm*faceName: DejaVu Sans Mono
