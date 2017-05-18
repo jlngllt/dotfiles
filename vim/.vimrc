@@ -789,6 +789,10 @@ function! Fix_netrw_fixmaps()
   unmap! <buffer> s
   unmap <buffer> S
   unmap! <buffer> S
+  unmap <buffer> U
+  unmap! <buffer> U
+  unmap <buffer> U
+  unmap! <buffer> U
 endfunction
 
 function! VCSDiffFileVimDiff()
