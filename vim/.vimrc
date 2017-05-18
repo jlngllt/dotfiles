@@ -712,6 +712,21 @@ autocmd FileType qf wincmd J
 " fenêtre quickfix pour cwindow
 autocmd QuickFixCmdPost *grep* cwindow
 
+" Unite: configuration minimal
+" Configuration similaire a ctrl-p.
+let g:unite_enable_start_insert = 1
+let g:unite_split_rule = "botright"
+let g:unite_winheight = 10
+let g:unite_enable_split_vertically = 0
+let g:unite_source_file_rec_ignore_pattern = '\%(.*\.chef/checksums/.*\)|\%(^\|/\)\.$\|\~$\|\.\%(o|exe|dll|bak|sw[po]\)$\|\%(^\|/\)\.\%(hg\|git\|bzr\|svn\)\%($\|/\)'
+
+nmap  U  [Unite]
+xmap  U  [Unite]
+nnoremap [Unite]   <Nop>
+xnoremap [Unite]   <Nop>
+
+nnoremap [Unite]U :<C-u>Unite<CR>
+
 "FONCTIONS
 " ----------------------------------------------------------------------------
 " Preview
@@ -879,3 +894,16 @@ function! JGUCtags(...)
   endif
 endfunction
 command! -nargs=? Ctags call JGUCtags(<f-args>)
+
+let g:unite_source_menu_menus = {}
+let g:unite_source_menu_menus.compiling = {
+      \     'description' : 'Makefile',
+      \ }
+let g:unite_source_menu_menus.compiling.command_candidates = [
+      \   [ '1 - Compilation: Make fast spu pikeos',  ':Make fast_FSP_SPU_LOG_pikeos' ] ,
+      \   [ '2 - Compilation: Make clean spu pikeos', ':Make clean_FSP_SPU_LOG_pikeos' ] ,
+      \   [ '3 - Compilation: Make spu mdc',          ':Make mdc_FSP_SPU_LOG_pikeos' ] ,
+      \   [ '4 - Compilation: Make spu pikeos',       ':Make FSP_SPU_LOG_pikeos' ] ,
+      \ ]
+
+nmap [Unite]c :Unite menu:compiling<cr>
