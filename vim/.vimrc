@@ -654,7 +654,9 @@ nnoremap [Search]t :<C-u>CtrlPTag<CR>
 " grep
 nnoremap [Search]g :<C-u>silent vimgrep //gj **/*.<left><left><left>
 \<left><left><left><left><left><left>
-nnoremap [Search]G :<C-u>silent vimgrep /<c-r><c-w>/gj **/*.
+nnoremap [Search]j :<C-u>silent grep!  \| copen \| redraw!
+      \<left><left><left><left><left><left><left><left><left><left><left><left>
+      \<left><left><left><left><left><left>
 " grep c/cpp file
 nnoremap [Search]c :<C-u>silent vimgrep //gj **/*.[ch] **/*.[ch]pp **/*.[ch]xx **/*.cc
       \<left><left><left><left><left><left><left><left><left><left><left><left>
@@ -689,24 +691,20 @@ let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:18'
 " type de recherche réalisé avec ctrl-p en fonction des diffèrent système de
 " recherche installé sur le système courant (pour crtl-p)
 if executable('ag')
-  let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden --nogroup --hidden
-                                     \ --ignore .git
-                                     \ --ignore **/*.a
-                                     \ --ignore **/*.o
-                                     \ --ignore **/*.bin
-                                     \ --ignore **/*.dia
-                                     \ --ignore .svn
-                                     \ --ignore .hg
-                                     \ --ignore .DS_Store
-                                     \ --ignore "**/*.pyc"
-                                     \ -g ""'
+  let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 elseif executable('ack')
   let g:ctrlp_user_command = 'ack %s --nocolor -g ""'
 endif
 
 " option de recherche quand grep est utilisé dans vim
-set grepprg=grep\ -Hnd\ skip\ -r
-set grepformat=%f:%l:%m,%f:%l%m,%f\ \ %l%m
+if executable('ag')
+  set grepprg=ag\ --ignore\ tags.prj\ --nogroup\ --nocolor\ --column
+  set grepformat=%f:%l:%c:%m
+else
+  set grepprg=grep\ --exclude=tags.prj\ -Hnd\ skip\ -r
+  set grepformat=%f:%l:%m,%f:%l%m,%f\ \ %l%m
+endif
+
 " quickfix toujours en bas de la fenêtre
 autocmd FileType qf wincmd J
 " fenêtre quickfix pour cwindow
