@@ -76,6 +76,7 @@ endif
 " BASIC
 " ----------------------------------------------------------------------------
 " Detection de l'OS
+let g:uname = ""
 if has("unix")
   let g:uname = substitute(system("uname -s"), "\n", "", "")
 endif
@@ -303,6 +304,13 @@ if $TMUX == ''
 endif
 " paramétrage de tabulation/indentation par default
 set tabstop=4 shiftwidth=4 softtabstop=4
+if &term =~ '^screen'
+  " tmux will send xterm-style keys when its xterm-keys option is on
+  execute "set <xUp>=\e[1;*A"
+  execute "set <xDown>=\e[1;*B"
+  execute "set <xRight>=\e[1;*C"
+  execute "set <xLeft>=\e[1;*D"
+endif
 
 " COLOR
 " ----------------------------------------------------------------------------
@@ -508,11 +516,20 @@ nmap <leader>t :Tagbar<cr>
 
 " MAPPING
 " ----------------------------------------------------------------------------
+" déplacement de lignes
+nnoremap <c-s-down> :m .+1<cr>
+nnoremap <c-s-up> :m .-2<cr>
+inoremap <c-s-down> <esc>:m .+1<cr>
+inoremap <c-s-up> <esc>:m .-2<cr>
+vnoremap <c-s-down> :m '>+1<cr>gv=gv
+vnoremap <c-s-up> :m '<-2<cr>gv=gv
 " annulation du sur lignage après une recherche
 nmap <space> :set hls!<Bar>:set hls?<CR>
 " compilation du projet
-nmap <F5> :Make FSP_SPU_LOG_pikeos; cp -vf MODS/FSP_SPU_LOG/bin/FSP_SPU_LOG.hbi /tftpboot/posix.hbi
-nmap <F6> :Make clean_mdc_FSP_SPU_LOG_pikeos mdc_FSP_SPU_LOG_pikeos FSP_SPU_LOG_pikeos; cp -vf MODS/FSP_SPU_LOG/bin/FSP_SPU_LOG.hbi /tftpboot/posix.hbi
+" nmap <F5> :Make FSP_SPU_LOG_pikeos;                                                     cp -vf MODS/FSP_SPU_LOG/bin/FSP_SPU_LOG.hbi /tftpboot/posix.hbi
+" nmap <F6> :Make clean_mdc_FSP_SPU_LOG_pikeos mdc_FSP_SPU_LOG_pikeos FSP_SPU_LOG_pikeos; cp -vf MODS/FSP_SPU_LOG/bin/FSP_SPU_LOG.hbi /tftpboot/posix.hbi
+nmap <F5> :Make FSP_SPU_LOG_pikeos; cp -vf BRICKS/MMA/bin/FSP_SPU_LOG_pikeos.hbi /tftpboot/posix.hbi
+nmap <F6> :Make clean_FSP_SPU_LOG_pikeos mdc_FSP_SPU_LOG_pikeos FSP_SPU_LOG_pikeos; cp -vf BRICKS/MMA/bin/FSP_SPU_LOG_pikeos.hbi /tftpboot/posix.hbi
 " activation de diffèrent type d'indentation
 nmap <F4> :set tabstop=4 shiftwidth=4 softtabstop=4<CR>
 nmap <F2> :set tabstop=2 shiftwidth=2 softtabstop=2<CR>
@@ -877,12 +894,18 @@ function! JGUSvnStatus(...)
 endfunction
 command! -nargs=? -complete=file SvnStatus silent call JGUSvnStatus(<f-args>)
 
+function! s:FilterQuickfixList(bang, pattern)
+  let cmp = a:bang ? '!~#' : '=~#'
+  call setqflist(filter(getqflist(), "bufname(v:val['bufnr']) " . cmp . " a:pattern"))
+endfunction
+command! -bang -nargs=1 -complete=file QFilter call s:FilterQuickfixList(<bang>0, <q-args>)
+
 function! JGUCtags(...)
   if a:0 >= 1
     let type = a:1
     if type == "lib"
-      if g:uname == "linux"
-        execute ":!ctags -n -o ~/.tags.clib -R --c-kinds=+p --fields=+iaS --extra=+q /usr/include"
+      if g:uname == "Linux"
+        execute ":!ctags -n -o ~/.tags.clib -R --c-kinds=+p --fields=+iaS --extra=+q /usr/include /opt/pikeos-4.1/target/arm/v7hf"
       elseif g:uname == "Darwin"
         execute ":!ctags -n -o ~/.tags.clib -R --c-kinds=+p --fields=+iaS --extra=+q /usr/local/include"
       else
