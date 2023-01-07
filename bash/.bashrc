@@ -40,7 +40,7 @@ then
 elif [ $distro = 'Linux' ]
 then
   # us international
-  setxkbmap -layout us -variant intl
+  # setxkbmap -layout us -variant intl
   #color
   eval $(dircolors -b $HOME/.dircolors)
 fi
@@ -48,5 +48,35 @@ fi
 # add bin (usr config)
 PATH=$PATH:$HOME/bin
 
+# John the ripper
+alias john="$HOME/github/john/run/john"
+
+# ghidra
+PATH="$PATH:/opt/ghidra/"
+
+# go
+PATH="$PATH:$HOME/go/bin"
+GOPATH=$HOME/go
+
+#rust
+PATH="$PATH:$HOME/.cargo/bin"
+
+# npm
+PATH="$PATH:$HOME/npm/bin"
+
 # please don't make cltr-s kill my terminal
 stty -ixon
+
+# load custom keybinding for arrow key and other stuff
+# added to crontab # @reboot xmodmap ~/.xmodmaprc
+# xmodmap ~/.xmodmaprc
+. "$HOME/.cargo/env"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# pnpm
+export PNPM_HOME="/home/julien/.local/share/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+# pnpm end
